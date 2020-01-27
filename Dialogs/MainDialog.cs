@@ -78,8 +78,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                      Lecturer = luisResult.Entities.Lecturer,
                      Opinion = luisResult.Entities.Opinion,
                      Feeling = luisResult.Entities.Feeling,
-
-                
                     };
                     break;
     
@@ -109,11 +107,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 unsupportedModules.Add(fromEntities.Module);
             }
 
-            // var toEntities = luisResult.ToEntities;
-            // if (!string.IsNullOrEmpty(toEntities.To) && string.IsNullOrEmpty(toEntities.Airport))
-            // {
-            //     unsupportedModules.Add(toEntities.To);
-            //}
+            var toEntities = luisResult.Entities;
+            if (!string.IsNullOrEmpty(toEntities.Opinion) && string.IsNullOrEmpty(toEntities.Module))
+            {
+                unsupportedModules.Add(toEntities.Module);
+            }
 
             if (unsupportedModules.Any())
             {
