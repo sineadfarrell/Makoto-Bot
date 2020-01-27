@@ -7,13 +7,22 @@
   "tokenizerVersion": "1.0.0",
   "intents": [
     {
-      "name": "BookFlight"
+      "name": "discussCampus"
     },
     {
-      "name": "Cancel"
+      "name": "discussHobbies"
     },
     {
-      "name": "GetWeather"
+      "name": "discussFeelings"
+    },
+    {
+      "name": "discussCoursework"
+    },
+    {
+      "name": "discussLectures"
+    },
+    {
+      "name": "discussModules"
     },
     {
       "name": "None"
@@ -38,43 +47,74 @@
   ],
   "closedLists": [
     {
-      "name": "Airport",
+      "name": "Module",
       "subLists": [
         {
-          "canonicalForm": "Paris",
+          "canonicalForm": "Spatial Information Systems",
           "list": [
-            "paris",
-            "cdg"
+            "COMP30110",
+            "spatial information systems",
+            "comp30110"
           ]
         },
         {
-          "canonicalForm": "London",
+          "canonicalForm": "Human Computer Interaction",
           "list": [
-            "london",
-            "lhr"
+            "human computer interaction",
+            "COMP47680",
+            "comp47880"
           ]
         },
         {
-          "canonicalForm": "Berlin",
+          "canonicalForm": "Connectionist Computing",
           "list": [
-            "berlin",
-            "txl"
+            "connectionist computing",
+            "COMP30230",
+            "comp30230"
+
           ]
         },
         {
-          "canonicalForm": "New York",
+          "canonicalForm": "Game Development",
           "list": [
-            "new york",
-            "jfk"
+            "game development",
+            "COMP30540",
+            "comp30540"
           ]
         },
         {
-          "canonicalForm": "Seattle",
+          "canonicalForm": "Ethical Computer Hacking",
           "list": [
-            "seattle",
-            "sea"
+            "ethical computer hacking",
+            "COMP30720",
+            "comp30720"
+          ]
+        },
+        {
+          "canonicalForm": "Advances in Wireless Networking",
+          "list": [
+            "advances in wireless networking",
+            "COMP40660",
+            "comp40660"
+          ]
+        },
+        {
+          "canonicalForm": "Contemporary Software Development",
+          "list": [
+            "contemporary software development",
+            "COMP47480",
+            "comp47480"
+          ]
+        },
+        {
+          "canonicalForm": "An Intro to Coding Theory",
+          "list": [
+            "an intro to coding theory",
+            "MATH30180",
+            "math30180"
           ]
         }
+        
       ],
       "roles": []
     }
@@ -92,29 +132,29 @@
   "patterns": [],
   "utterances": [
     {
-      "text": "book a flight",
-      "intent": "BookFlight",
+      "text": "I'm taking",
+      "intent": "discussModule",
       "entities": []
     },
     {
-      "text": "book a flight from new york",
-      "intent": "BookFlight",
+      "text": "I'm taking ethical computer hacking",
+      "intent": "discussMoudule",
       "entities": [
         {
-          "entity": "From",
-          "startPos": 19,
-          "endPos": 26
+          "entity": "Module",
+          "startPos": 11,
+          "endPos": 24
         }
       ]
     },
     {
-      "text": "book a flight from seattle",
-      "intent": "BookFlight",
+      "text": "I'm taking connectionist computing",
+      "intent": "discussModule",
       "entities": [
         {
-          "entity": "From",
-          "startPos": 19,
-          "endPos": 25
+          "entity": "Module",
+          "startPos": 11,
+          "endPos": 34
         }
       ]
     },
@@ -129,29 +169,34 @@
       "entities": []
     },
     {
-      "text": "book flight from london to paris on feb 14th",
-      "intent": "BookFlight",
+      "text": "I'm taking connectionist computing it is interesting",
+      "intent": "discussModule",
       "entities": [
         {
-          "entity": "From",
-          "startPos": 17,
-          "endPos": 22
+          "entity": "Module",
+          "startPos": 11,
+          "endPos": 34
         },
         {
-          "entity": "To",
-          "startPos": 27,
-          "endPos": 31
+          "entity": "Opinion",
+          "startPos": 41,
+          "endPos": 52
         }
       ]
     },
     {
-      "text": "book flight to berlin on feb 14th",
-      "intent": "BookFlight",
+      "text": "I'm taking connectionist computing it is taught by Gianluca Pollastri",
+      "intent": "discussModule",
       "entities": [
         {
-          "entity": "To",
-          "startPos": 15,
-          "endPos": 20
+          "entity": "Module",
+          "startPos": 1,
+          "endPos": 34
+        },
+        {
+          "entity": "Lecturer",
+          "startPos": 41,
+          "endPos": 57
         }
       ]
     },

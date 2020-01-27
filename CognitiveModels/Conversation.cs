@@ -21,6 +21,7 @@ namespace Microsoft.BotBuilderSamples
             discussFeelings,
             discussCoursework,
             discussLecturers,
+            discussModule,
             None
         };
         public Dictionary<Intent, IntentScore> Intents;
