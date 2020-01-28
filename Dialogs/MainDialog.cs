@@ -31,7 +31,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                InitialStepAsync,
+                // InitialStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -59,7 +59,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
              var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
              
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            // return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), null, cancellationToken); 
         }
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
