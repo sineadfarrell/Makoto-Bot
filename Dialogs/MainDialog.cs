@@ -30,53 +30,42 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(moduleDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                IntroStepAsync,
+                // IntroStepAsync,
+                InitialStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
 
-            // The initial child Dialog to run.
+            // The initial child Dialog to run
             InitialDialogId = nameof(WaterfallDialog);
         }
-
-        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the appsettings.json file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), null, cancellationToken); 
             }
+        // private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     if (!_luisRecognizer.IsConfigured)
+        //     {
+        //         await stepContext.Context.SendActivityAsync(
+        //             MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the appsettings.json file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-            // Use the text provided in FinalStepAsync or the default if it is the first time.
+        //         return await stepContext.NextAsync(null, cancellationToken);
+        //     }
+
+        //     // Use the text provided in FinalStepAsync or the default if it is the first time.
             
-             var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
-            //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
-             var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
-             Console.Write("IntroStep complete");
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-        }
-        private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
-        {
-            var reply = MessageFactory.Text("When you are ready to proceed click the button below");
-
-            reply.SuggestedActions = new SuggestedActions()
-             {
-            Actions = new List<CardAction>()
-             {   
-            new CardAction() { Title = "Proceed with Conversation with Makoto", Type = ActionTypes.ImBack, Value = "Red" },
-          
-                    },
-            };
-        await turnContext.SendActivityAsync(reply, cancellationToken);
-}
+        //      var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
+        //     //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
+        //      var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
+             
+        //     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+        // }
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
             {
-               
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
             }
 

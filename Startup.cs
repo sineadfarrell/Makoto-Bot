@@ -36,6 +36,8 @@ namespace Microsoft.BotBuilderSamples
 
             // Discuss a module.
             services.AddSingleton<ModuleDialog>();
+            
+            services.AddSingleton<TopLevelDialog>();
 
             // The MainDialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
