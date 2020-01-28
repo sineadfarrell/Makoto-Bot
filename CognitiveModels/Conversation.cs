@@ -40,22 +40,19 @@ namespace Microsoft.BotBuilderSamples
             public string Feeling; 
 
             // Composites
-            // public class _InstanceFrom
-            // {
-            //     public InstanceData[] Classes;
-            // }
+            public class _InstanceModule
+            {
+                public InstanceData[] Module;
+            }
         
-            // public class _InstanceTo
-            // {
-            //     public InstanceData[] Module;
-            // }
-            // public class ToClass
-            // {
-            //     public string[][] Airport;
-            //     [JsonProperty("$instance")]
-            //     public _InstanceTo _instance;
-            // }
-            // public ToClass[] To;
+            public class _InstanceForModule
+            {
+                 public string[][] Module;
+                [JsonProperty("$instance")]
+                public _InstanceModule _instance;
+            }
+        
+           
 
             // Instance
             public class _Instance

@@ -79,7 +79,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                      Opinion = luisResult.Entities.Opinion,
                      Feeling = luisResult.Entities.Feeling,
                     };
-                    break;
+                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog), moduleDetails, cancellationToken);
     
 
                 default:

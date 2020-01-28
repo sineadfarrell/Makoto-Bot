@@ -10,7 +10,7 @@ using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
-    public class ModuleDialog : CancelAndHelpDialog
+    public class ModuleDialog : ComponentDialog
     {
         private const string NumberModulesMsgText = "How many modules are you doing?";
         
@@ -19,7 +19,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
-            AddDialog(new DateResolverDialog());
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 NumberModulesStepAsync,

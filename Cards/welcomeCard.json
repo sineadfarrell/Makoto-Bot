@@ -43,11 +43,7 @@
             "type": "Action.OpenUrl",
             "title": "Documentation",
             "url": "https://aka.ms/bfvadocs"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Skills",
-            "url": "https://aka.ms/bfskills"
         }
+       
     ]
 }
