@@ -31,7 +31,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                // InitialStepAsync,
+                InitialStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -39,10 +39,16 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // The initial child Dialog to run
             InitialDialogId = nameof(WaterfallDialog);
         }
-        private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), null, cancellationToken); 
-            }
+         private const string UserInfo = "value-userInfo";     
+            private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {           stepContext.Values[UserInfo] = new UserProfile(); 
+
+     var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") };
+
+    // Ask the user to enter their name.
+    return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
+}
+           
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -59,8 +65,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
              var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
              
-            // return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), null, cancellationToken); 
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
