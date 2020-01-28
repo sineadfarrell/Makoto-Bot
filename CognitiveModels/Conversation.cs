@@ -18,10 +18,11 @@ namespace Microsoft.BotBuilderSamples
         public enum Intent {
             discussCampus,
             discussHobbies,
-            discussFeelings,
+            discussFeeling,
             discussCoursework,
-            discussLecturers,
+            discussLecturer,
             discussModule,
+            endConversation,
             None
         };
         public Dictionary<Intent, IntentScore> Intents;

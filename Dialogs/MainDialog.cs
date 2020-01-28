@@ -61,7 +61,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                Console.WriteLine("TEST");
+               
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
             }
 
@@ -69,7 +69,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var luisResult = await _luisRecognizer.RecognizeAsync<Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
-                case Conversation.Intent.discussCampus:
+                case Conversation.Intent.discussModule:
                     await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
                      // Initialize ModuleDetails with any entities we may have found in the response.
                     var moduleDetails = new ModuleDetails()
