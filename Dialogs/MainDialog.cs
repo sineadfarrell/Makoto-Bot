@@ -43,24 +43,24 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), null, cancellationToken); 
             }
-        // private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     if (!_luisRecognizer.IsConfigured)
-        //     {
-        //         await stepContext.Context.SendActivityAsync(
-        //             MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the appsettings.json file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the appsettings.json file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-        //         return await stepContext.NextAsync(null, cancellationToken);
-        //     }
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
 
-        //     // Use the text provided in FinalStepAsync or the default if it is the first time.
+            // Use the text provided in FinalStepAsync or the default if it is the first time.
             
-        //      var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
-        //     //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
-        //      var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
+             var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
+            //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
+             var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
              
-        //     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-        // }
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+        }
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -125,21 +125,34 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
         
     }
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            // If the child dialog ("BookingDialog") was cancelled, the user failed to confirm or if the intent wasn't BookFlight
-            // the Result here will be null.
-            if (stepContext.Result is ModuleDetails result)
-            {
-                
-                var messageText = $"Thank you for telling me about {result.ModuleName} with  {result.Lecturer}";
-                var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(message, cancellationToken);
-            }
+    private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+{
+    var userInfo = (UserProfile)stepContext.Result;
 
-            // Restart the main dialog with a different message the second time around
-            var promptMessage = "What else can I do for you?";
-            return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
-        }
+    string status = "You are signed up to review ";
+
+    await stepContext.Context.SendActivityAsync(status);
+
+    // var accessor = .CreateProperty<UserProfile>(nameof(UserProfile));
+    // await accessor.SetAsync(stepContext.Context, userInfo, cancellationToken);
+
+    return await stepContext.EndDialogAsync(null, cancellationToken);
+}
+        // private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     // If the child dialog ("BookingDialog") was cancelled, the user failed to confirm or if the intent wasn't BookFlight
+        //     // the Result here will be null.
+        //     if (stepContext.Result is ModuleDetails result)
+        //     {
+                
+        //         var messageText = $"Thank you for telling me about {result.ModuleName} with  {result.Lecturer}";
+        //         var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
+        //         await stepContext.Context.SendActivityAsync(message, cancellationToken);
+        //     }
+
+        //     // Restart the main dialog with a different message the second time around
+        //     var promptMessage = "What else can I do for you?";
+        //     return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
+        // }
     
     }}
