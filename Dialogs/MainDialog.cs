@@ -51,11 +51,26 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
             
-            var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
-            
-            var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
+             var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
+            //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
+             var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
+             Console.Write("IntroStep complete");
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
+        private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            var reply = MessageFactory.Text("When you are ready to proceed click the button below");
+
+            reply.SuggestedActions = new SuggestedActions()
+             {
+            Actions = new List<CardAction>()
+             {   
+            new CardAction() { Title = "Proceed with Conversation with Makoto", Type = ActionTypes.ImBack, Value = "Red" },
+          
+                    },
+            };
+        await turnContext.SendActivityAsync(reply, cancellationToken);
+}
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
