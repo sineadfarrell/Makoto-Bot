@@ -39,16 +39,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // The initial child Dialog to run
             InitialDialogId = nameof(WaterfallDialog);
         }
-         private const string UserInfo = "value-userInfo";     
-            private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {           stepContext.Values[UserInfo] = new UserProfile(); 
+        private const string UserInfo = "value-userInfo";
+        private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            stepContext.Values[UserInfo] = new UserProfile();
+    
+            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("To begin our conversation please type someting") };
 
-     var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") };
+            // Ask the user to enter their name.
+            return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
+        }
 
-    // Ask the user to enter their name.
-    return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
-}
-           
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -60,12 +61,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            
-             var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
+
+            var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
             //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
-             var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
-             
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
+
+            return await stepContext.NextAsync(nameof(TextPrompt), cancellationToken);
         }
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -75,22 +76,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
             }
 
-        
+
             var luisResult = await _luisRecognizer.RecognizeAsync<Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
                 case Conversation.Intent.discussModule:
                     await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
-                     // Initialize ModuleDetails with any entities we may have found in the response.
+                    // Initialize ModuleDetails with any entities we may have found in the response.
                     var moduleDetails = new ModuleDetails()
-                    {    
-                     ModuleName = luisResult.Entities.Module,
-                     Lecturer = luisResult.Entities.Lecturer,
-                     Opinion = luisResult.Entities.Opinion,
-                     Feeling = luisResult.Entities.Feeling,
+                    {
+                        ModuleName = luisResult.Entities.Module,
+                        Lecturer = luisResult.Entities.Lecturer,
+                        Opinion = luisResult.Entities.Opinion,
+                        Feeling = luisResult.Entities.Feeling,
                     };
                     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), moduleDetails, cancellationToken);
-    
+
 
                 default:
                     // Catch all for unhandled intents
@@ -98,10 +99,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
                     break;
-            
+
             }
             return await stepContext.NextAsync(null, cancellationToken);
-            
+
         }
 
         // Shows a warning if the Modules are recognized as entities but they are not in the entity list.
@@ -129,28 +130,28 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
                 await context.SendActivityAsync(message, cancellationToken);
             }
-        
-    }
-    private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-{
-    var userInfo = (UserProfile)stepContext.Result;
 
-    string status = "You are signed up to review ";
+        }
+        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var userInfo = (UserProfile)stepContext.Result;
 
-    await stepContext.Context.SendActivityAsync(status);
+            string status = "You are signed up to review ";
 
-    // var accessor = .CreateProperty<UserProfile>(nameof(UserProfile));
-    // await accessor.SetAsync(stepContext.Context, userInfo, cancellationToken);
+            await stepContext.Context.SendActivityAsync(status);
 
-    return await stepContext.EndDialogAsync(null, cancellationToken);
-}
+            // var accessor = .CreateProperty<UserProfile>(nameof(UserProfile));
+            // await accessor.SetAsync(stepContext.Context, userInfo, cancellationToken);
+
+            return await stepContext.EndDialogAsync(null, cancellationToken);
+        }
         // private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         // {
         //     // If the child dialog ("BookingDialog") was cancelled, the user failed to confirm or if the intent wasn't BookFlight
         //     // the Result here will be null.
         //     if (stepContext.Result is ModuleDetails result)
         //     {
-                
+
         //         var messageText = $"Thank you for telling me about {result.ModuleName} with  {result.Lecturer}";
         //         var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
         //         await stepContext.Context.SendActivityAsync(message, cancellationToken);
@@ -160,5 +161,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         //     var promptMessage = "What else can I do for you?";
         //     return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
         // }
-    
-    }}
+
+    }
+}
