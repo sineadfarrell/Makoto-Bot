@@ -40,16 +40,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
         private const string UserInfo = "value-userInfo";
-        private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            stepContext.Values[UserInfo] = new UserProfile();
-    
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("When you are ready to begin our conversation please type someting") };
-
-            // Ask the user to enter their name.
-            return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
-        }
-
+       
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -68,6 +59,16 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             return await stepContext.NextAsync(nameof(TextPrompt), cancellationToken);
         }
+         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            stepContext.Values[UserInfo] = new UserProfile();
+    
+            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("When you are ready to begin our conversation please type someting") };
+
+            // Ask the user to enter their name.
+            return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
+        }
+
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
