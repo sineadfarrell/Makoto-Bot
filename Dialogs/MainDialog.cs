@@ -44,7 +44,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             stepContext.Values[UserInfo] = new UserProfile();
     
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("To begin our conversation please type someting") };
+            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("When you are ready to begin our conversation please type someting") };
 
             // Ask the user to enter their name.
             return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
@@ -95,7 +95,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try asking in a different way (intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
                     break;
@@ -136,7 +136,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             var userInfo = (UserProfile)stepContext.Result;
 
-            string status = "You are signed up to review ";
+            string status = "Thank you so much for talking to me today!";
 
             await stepContext.Context.SendActivityAsync(status);
 
