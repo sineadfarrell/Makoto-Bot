@@ -52,28 +52,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "Hi! I'm Makoto, I want to talk to you about your University experince today. \nWhen you are ready to begin our conversation please type someting";
+            var messageText = stepContext.Options?.ToString() ?? "Hi! I'm Makoto, I want to talk to you about your University experince today. \nWhen you are ready to begin our conversation please type someting\n";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
-        // private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     if (!_luisRecognizer.IsConfigured)
-        //     {
-        //         await stepContext.Context.SendActivityAsync(
-        //             MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the appsettings.json file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-        //         return await stepContext.NextAsync(null, cancellationToken);
-        //     }
-
-        //     // Use the text provided in FinalStepAsync or the default if it is the first time.
-
-        //     var introductionMsg = stepContext.Options?.ToString() ?? "Hi, I'm Makoto and today I want to talk to you about your University experience.";
-        //     //  await  SendSuggestedActionsAsync(stepContext, cancellationToken);
-        //     var promptMessage = MessageFactory.Text(introductionMsg, introductionMsg, InputHints.ExpectingInput);
-
-        //     return await stepContext.NextAsync(nameof(TextPrompt), cancellationToken);
-        // }
+    
          private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             stepContext.Values[UserInfo] = new UserProfile();
@@ -89,7 +72,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), new ModuleDetails(), cancellationToken);
             }
 
 
