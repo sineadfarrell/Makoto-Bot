@@ -72,24 +72,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), new ModuleDetails(), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), cancellationToken);
             }
 
 
             var luisResult = await _luisRecognizer.RecognizeAsync<Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
-                // case Conversation.Intent.discussModule:
-                //     await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
-                //     // Initialize ModuleDetails with any entities we may have found in the response.
-                //     var moduleDetails = new ModuleDetails()
-                //     {
-                //         ModuleName = luisResult.Entities.Module,
-                //         Lecturer = luisResult.Entities.Lecturer,
-                //         Opinion = luisResult.Entities.Opinion,
-                //         Feeling = luisResult.Entities.Feeling,
-                //     };
-                //     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), moduleDetails, cancellationToken);
+                case Conversation.Intent.discussSelf:
+                    await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
+                    // Initialize ModuleDetails with any entities we may have found in the response.
+                    var moduleDetails = new UserDetails()
+                    {
+                        UserName = luisResult.Entities.UserName,
+                        
+                    };
+                    return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), cancellationToken);
 
 
                 default:

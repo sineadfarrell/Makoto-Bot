@@ -22,6 +22,7 @@ namespace Microsoft.BotBuilderSamples
             discussCoursework,
             discussLecturer,
             discussModule,
+            discussSelf,
             endConversation,
             None
         };
@@ -38,6 +39,9 @@ namespace Microsoft.BotBuilderSamples
             public string Lecturer;
             public string Opinion;
             public string Feeling; 
+
+            public string UserName;
+        
 
             // Composites
             public class _InstanceModule
