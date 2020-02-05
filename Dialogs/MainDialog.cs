@@ -32,8 +32,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                
                 IntroStepAsync,
-                ActStepAsync,
                 InitialStepAsync,
+                ActStepAsync,
                 FinalStepAsync,
             }));
 
@@ -60,12 +60,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     
          private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            stepContext.Values[UserInfo] = new UserProfile();
-    
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("When you are ready to begin our conversation please type someting") };
+           
+            // Use the text provided in FinalStepAsync or the default if it is the first time.       
+            var messageText = stepContext.Options?.ToString() ?? "To begin enter your name ";
 
-            // Ask the user to enter their name.
-            return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
+            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
 
 
