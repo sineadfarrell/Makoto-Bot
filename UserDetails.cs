@@ -4,8 +4,6 @@ namespace Microsoft.BotBuilderSamples
     {
         public string UserName { get; set; }
 
-        
-
         }
     }
 
