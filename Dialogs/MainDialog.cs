@@ -31,8 +31,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                
-                IntroStepAsync,
+                
                 InitialStepAsync,
+                IntroStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -62,7 +63,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
            
             // Use the text provided in FinalStepAsync or the default if it is the first time.       
-            var messageText = stepContext.Options?.ToString() ?? "When you are ready to begin our conversation please type someting\n;
+            var messageText = stepContext.Options?.ToString() ?? "When you are ready to begin our conversation please type someting";
 
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
