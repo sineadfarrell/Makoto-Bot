@@ -32,7 +32,7 @@ namespace Microsoft.BotBuilderSamples
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            await turnContext.SendActivityAsync("Hi! I'm Makoto, I want to talk to you about your University experince today.");
+            await turnContext.SendActivityAsync("Hi! I'm Makoto, I want to talk to you about your University experince today. \n To begin our conversation type anything");
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
