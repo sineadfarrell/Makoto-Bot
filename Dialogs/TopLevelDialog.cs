@@ -23,11 +23,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
         private const string UserInfo = "value-userInfo";
-         private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken){
-    // Create an object in which to collect the user's information within the dialog.
+        private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken){
+        // Create an object in which to collect the user's information within the dialog.
         stepContext.Values[UserInfo] = new UserProfile(); 
 
-    var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") };
+    var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name to begin.") };
 
     // Ask the user to enter their name.
     return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);

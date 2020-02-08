@@ -10,12 +10,12 @@ using Microsoft.Bot.Schema;
 
 namespace Microsoft.BotBuilderSamples
 {
-    public class StateManagementBot : ActivityHandler
+    public class TestBot : ActivityHandler
     {
         private BotState _conversationState;
         private BotState _userState;
 
-        public StateManagementBot(ConversationState conversationState, UserState userState)
+        public TestBot(ConversationState conversationState, UserState userState)
         {
             _conversationState = conversationState;
             _userState = userState;
