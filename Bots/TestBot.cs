@@ -39,7 +39,7 @@ namespace Microsoft.BotBuilderSamples
         {
             // Get the state properties from the turn context.
 
-            var conversationStateAccessors =  _conversationState.CreateProperty<ConversationData>(nameof(ConversationData));
+            var conversationStateAccessors = _conversationState.CreateProperty<ConversationData>(nameof(ConversationData));
             var conversationData = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationData());
 
             var userStateAccessors = _userState.CreateProperty<UserProfile>(nameof(UserProfile));
@@ -54,7 +54,7 @@ namespace Microsoft.BotBuilderSamples
                     userProfile.Name = turnContext.Activity.Text?.Trim();
 
                     // Acknowledge that we got their name.
-                    await turnContext.SendActivityAsync($"Thanks {userProfile.Name}");
+                    await turnContext.SendActivityAsync($"Thanks {userProfile.Name}. ");
 
                     // Reset the flag to allow the bot to go through the cycle again.
                     conversationData.PromptedUserForName = false;
@@ -67,9 +67,31 @@ namespace Microsoft.BotBuilderSamples
                     // Set the flag to true, so we don't prompt in the next turn.
                     conversationData.PromptedUserForName = true;
                 }
-                
             }
-           
+
+            if (userProfile.NumberOfModules == null)
+            {
+                if (conversationData.PromptedForNumberOfModules)
+                {
+                    //set number of modules user is taking
+                    string temp = turnContext.Activity.Text?.Trim();
+                    int number;
+                    bool isParsable = Int32.TryParse(temp, out number);
+                    if (isParsable){
+                        userProfile.NumberOfModules =  number;
+                    }
+                    else{
+                        await turnContext.SendActivityAsync($"I don't understand");
+                    }
+                }
+                else{
+    
+                await turnContext.SendActivityAsync($"How many modules are you taking this semester?");
+                conversationData.PromptedForNumberOfModules = true;
+                }
+            }
+
+
         }
     }
 }

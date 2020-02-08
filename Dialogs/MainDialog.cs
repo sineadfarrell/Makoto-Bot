@@ -84,9 +84,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 case Conversation.Intent.discussSelf:
                     await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
                     // Initialize ModuleDetails with any entities we may have found in the response.
-                    var moduleDetails = new UserDetails()
+                    var moduleDetails = new UserProfile()
                     {
-                        UserName = luisResult.Entities.UserName,
+                        Name = luisResult.Entities.UserName,
                         
                     };
                     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), cancellationToken);

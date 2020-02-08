@@ -9,5 +9,7 @@ namespace Microsoft.BotBuilderSamples
         
         // Track whether we have already asked the user's name
         public bool PromptedUserForName { get; set; } = false;
+
+        public bool PromptedForNumberOfModules { get; set; } = false;
     }
 }
