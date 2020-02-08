@@ -68,6 +68,14 @@ namespace Microsoft.BotBuilderSamples
                     conversationData.PromptedUserForName = true;
                 }
             }
+        }
+protected  async Task OnMessageGetModuleNumberAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        {
+             var conversationStateAccessors = _conversationState.CreateProperty<ConversationData>(nameof(ConversationData));
+            var conversationData = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationData());
+
+            var userStateAccessors = _userState.CreateProperty<UserProfile>(nameof(UserProfile));
+            var userProfile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile());
 
             if (userProfile.NumberOfModules == null)
             {
@@ -92,6 +100,7 @@ namespace Microsoft.BotBuilderSamples
             }
 
 
-        }
+        
+    }
     }
 }
