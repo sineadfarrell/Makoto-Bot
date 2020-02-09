@@ -19,6 +19,7 @@ namespace Microsoft.BotBuilderSamples
         {
             _conversationState = conversationState;
             _userState = userState;
+            
         }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
@@ -34,6 +35,8 @@ namespace Microsoft.BotBuilderSamples
         {
             await turnContext.SendActivityAsync("Hi! I'm Makoto, I want to talk to you about your University experince today. \n To begin our conversation type anything");
         }
+       
+         
 
         // protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         // {
