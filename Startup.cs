@@ -35,14 +35,14 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<ConversationRecognizer>();
 
             // Discuss a module.
-            services.AddSingleton<ModuleDialog>();
+            // services.AddSingleton<ModuleDialog>();
 
             services.AddSingleton<UserProfileDialog>();
             
-            services.AddSingleton<TopLevelDialog>();
+            // services.AddSingleton<TopLevelDialog>();
 
-            // The MainDialog that will be run by the bot.
-            services.AddSingleton<MainDialog>();
+            // // The MainDialog that will be run by the bot.
+            // services.AddSingleton<MainDialog>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, DialogBot<UserProfileDialog>>();

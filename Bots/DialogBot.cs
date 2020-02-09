@@ -39,22 +39,22 @@ namespace Microsoft.BotBuilderSamples.Bots
             await turnContext.SendActivityAsync("Hi! I'm Makoto, I want to talk to you about your University experince today. \n To begin our conversation type anything");
         }
 
-        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await base.OnTurnAsync(turnContext, cancellationToken);
+    public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
+{
+    await base.OnTurnAsync(turnContext, cancellationToken);
 
-            // Save any state changes that might have occured during the turn.
-            await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-            await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
-        }
+    // Save any state changes that might have occured during the turn.
+    await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+    await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
+}
 
+protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+{
+    Logger.LogInformation("Running dialog with Message Activity.");
 
-        protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
-        {
-            Logger.LogInformation("Running dialog with Message Activity.");
+    // Run the Dialog with the new message Activity.
+    await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
 
-            // Run the Dialog with the new message Activity.
-            await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
-        }
+}
     }
 }
