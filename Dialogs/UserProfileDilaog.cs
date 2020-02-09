@@ -44,7 +44,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
     private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
      {
-
+         
     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") }, cancellationToken);
     }
 

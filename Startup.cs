@@ -35,7 +35,7 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<ConversationRecognizer>();
 
             // Discuss a module.
-            // services.AddSingleton<ModuleDialog>();
+            services.AddSingleton<ModuleDialog>();
 
             services.AddSingleton<UserProfileDialog>();
             
@@ -45,7 +45,7 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<MainDialog>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, DialogBot<UserProfileDialog>>();
+            services.AddTransient<IBot, DialogBot<ModuleDialog>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
