@@ -28,7 +28,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(UserProfileDialog);
+            // AddDialog(dialog: UserProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,

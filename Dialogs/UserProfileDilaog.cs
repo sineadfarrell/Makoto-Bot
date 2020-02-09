@@ -17,7 +17,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
          public UserProfileDialog()
             : base(nameof(UserProfileDialog))
     {
-        _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
+       
 
         // This array defines how the Waterfall will execute.
         var waterfallSteps = new WaterfallStep[]
