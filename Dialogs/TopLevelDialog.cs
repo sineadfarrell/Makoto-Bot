@@ -10,13 +10,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     public class TopLevelDialog : ComponentDialog
     {
          public TopLevelDialog()
-            : base(nameof(ModuleDialog))
+            : base(nameof(TopLevelDialog))
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-               NameStepAsync 
+               NameStepAsync
             }));
 
             // The initial child Dialog to run.
