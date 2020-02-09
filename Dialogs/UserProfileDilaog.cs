@@ -12,7 +12,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 {
      public class UserProfileDialog : ComponentDialog
     {
-        private IStatePropertyAccessor<UserProfile> _userProfileAccessor;
+
 
          public UserProfileDialog()
             : base(nameof(UserProfileDialog))
