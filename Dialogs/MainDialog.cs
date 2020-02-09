@@ -27,13 +27,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(moduleDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-               
-                
-                InitialStepAsync,
                 IntroStepAsync,
+                InitialStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
