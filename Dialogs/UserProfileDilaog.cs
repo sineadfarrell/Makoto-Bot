@@ -14,8 +14,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     {
         private IStatePropertyAccessor<UserProfile> _userProfileAccessor;
 
-        public UserProfileDialog(UserState userState)
-        : base(nameof(UserProfileDialog))
+         public UserProfileDialog()
+            : base(nameof(UserProfileDialog))
     {
         _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
 
@@ -47,6 +47,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") }, cancellationToken);
     }
-    
+
     }
 }

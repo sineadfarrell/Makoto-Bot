@@ -28,7 +28,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(moduleDialog);
+            AddDialog(UserProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -88,7 +88,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Name = luisResult.Entities.UserName,
                         
                     };
-                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog), cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), cancellationToken);
 
 
                 default:
