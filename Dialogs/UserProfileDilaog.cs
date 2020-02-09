@@ -47,5 +47,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") }, cancellationToken);
     }
+    
     }
 }
