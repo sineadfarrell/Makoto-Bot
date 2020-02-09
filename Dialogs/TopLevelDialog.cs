@@ -27,7 +27,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         // Create an object in which to collect the user's information within the dialog.
         stepContext.Values[UserInfo] = new UserProfile(); 
 
-    var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name to begin.") };
+    var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("What's your name?") };
 
     // Ask the user to enter their name.
     return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
