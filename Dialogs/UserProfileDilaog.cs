@@ -26,20 +26,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
 
         NameStepAsync,
-        // NameConfirmStepAsync,
-        // AgeStepAsync,
-        // PictureStepAsync,
-        // ConfirmStepAsync,
-        // SummaryStepAsync,
+        
         };
 
         // Add named dialogs to the DialogSet. These names are saved in the dialog state.
 
         AddDialog(new TextPrompt(nameof(TextPrompt)));
-        AddDialog(new NumberPrompt<int>(nameof(NumberPrompt<int>), AgePromptValidatorAsync));
-        AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
-        AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
-        AddDialog(new AttachmentPrompt(nameof(AttachmentPrompt), PicturePromptValidatorAsync));
+       
 
         // The initial child Dialog to run.
         InitialDialogId = nameof(WaterfallDialog);
