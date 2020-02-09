@@ -32,7 +32,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                InitialStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -53,27 +52,19 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "Hi! I'm Makoto, I want to talk to you about your University experince today.";
+            var messageText = stepContext.Options?.ToString() ?? "When you are ready to begin our conversation please type your name";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
     
-         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-           
-            // Use the text provided in FinalStepAsync or the default if it is the first time.       
-            var messageText = stepContext.Options?.ToString() ?? "When you are ready to begin our conversation please type someting";
-
-            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-        }
+      
 
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), cancellationToken);
             }
 
 
