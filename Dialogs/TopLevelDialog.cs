@@ -35,15 +35,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
         private async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // Create an object in which to collect the user's information within the dialog.
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-
+            // Create an object in which to collect the user's information within the dialog
 
             var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("What's your name?") };
 
