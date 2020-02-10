@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     {
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
-        public TopLevelDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, ILogger<TopLevelDialog> logger)
+        public TopLevelDialog(ConversationRecognizer luisRecognizer, ILogger<TopLevelDialog> logger)
            : base(nameof(TopLevelDialog))
         {
             _luisRecognizer = luisRecognizer;
