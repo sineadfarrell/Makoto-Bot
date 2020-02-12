@@ -84,7 +84,60 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
                     return await stepContext.BeginDialogAsync(nameof(TopLevelDialog),userInfo, cancellationToken);
 
+                case Conversation.Intent.discussModule:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getModuleMessageText = "TODO: get Module flow here";
+                    var getModuleMessage = MessageFactory.Text(getModuleMessageText, getModuleMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getModuleMessage, cancellationToken);
+                    break;
+                
+                case Conversation.Intent.discussLecturer:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getLecturerMessageText = "TODO: get Lecturer flow here";
+                    var getLecturerMessage = MessageFactory.Text(getLecturerMessageText, getLecturerMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getLecturerMessage, cancellationToken);
+                    break;
 
+                case Conversation.Intent.discussHobbies:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getHobbiesMessageText = "TODO: get Hobbies flow here";
+                    var getHobbiesMessage = MessageFactory.Text(getHobbiesMessageText, getHobbiesMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getHobbiesMessage, cancellationToken);
+                    break;
+                
+                case Conversation.Intent.discussFeeling:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getFeelingMessageText = "TODO: get Feeling flow here";
+                    var getFeelingMessage = MessageFactory.Text(getFeelingMessageText, getFeelingMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getFeelingMessage, cancellationToken);
+                    break;
+                case Conversation.Intent.discussCoursework:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getCWMessageText = "TODO: get Coursework flow here";
+                    var getCWMessage = MessageFactory.Text(getCWMessageText, getCWMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getCWMessage, cancellationToken);
+                    break;
+                
+                case Conversation.Intent.discussCampus:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getCampusMessageText = "TODO: get Campus flow here";
+                    var getCampusMessage = MessageFactory.Text(getCampusMessageText, getCampusMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getCampusMessage, cancellationToken);
+                    break;
+                
+                case Conversation.Intent.endConversation:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getEndMessageText = "TODO: get End flow here";
+                    var getEndMessage = MessageFactory.Text(getEndMessageText, getEndMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
+                    break;
+                
+                case Conversation.Intent.None:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getNoneMessageText = "TODO: get None flow here";
+                    var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getNoneMessage, cancellationToken);
+                    break;
                 default:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
