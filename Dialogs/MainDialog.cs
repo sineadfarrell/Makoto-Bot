@@ -30,7 +30,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(userProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-            
+                IntroStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -38,7 +38,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // The initial child Dialog to run
             InitialDialogId = nameof(WaterfallDialog);
         }
-        private const string UserInfo = "value-userInfo";
+
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -51,7 +51,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "When you are ready to begin our conversation please type your name";
+            var messageText = stepContext.Options?.ToString() ?? "Tell me something about your university experience? \nSay something like\"I'm studying X module\" ";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
@@ -60,15 +60,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), new UserProfile(), cancellationToken);
             }
-            // if (!_luisRecognizer.IsConfigured)
-            // {
-            //     return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), new UserProfile(), cancellationToken);
-            // }
 
 
             var luisResult = await _luisRecognizer.RecognizeAsync<Conversation>(stepContext.Context, cancellationToken);
@@ -82,7 +75,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Name = luisResult.Entities.UserName,
                         Stage = luisResult.Entities.Stage,
                         NumberOfModules = luisResult.Entities.NumberOfModules,
-                        ModulesTaken = luisResult.Entities.ModulesTaken,
+                        Module = luisResult.Entities.Module,
 
                     };
                     return await stepContext.BeginDialogAsync(nameof(UserProfileDialog),userInfo, cancellationToken);
