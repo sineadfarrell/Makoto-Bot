@@ -32,22 +32,7 @@
     }
   ],
   "entities": [],
-  "composites": [
-    {
-      "name": "From",
-      "children": [
-        "Airport"
-      ],
-      "roles": []
-    },
-    {
-      "name": "To",
-      "children": [
-        "Airport"
-      ],
-      "roles": []
-    }
-  ],
+  
   "closedLists": [
     {
       "name": "Module",

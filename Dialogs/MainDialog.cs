@@ -148,7 +148,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.NextAsync(null, cancellationToken);
 
         }
-
         // Shows a warning if the Modules are recognized as entities but they are not in the entity list.
         // In some cases LUIS will recognize the From and To composite entities as a valid cities but the From and To Airport values
         // will be empty if those entity values can't be mapped to a canonical item in the Airport.
