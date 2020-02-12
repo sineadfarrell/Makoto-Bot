@@ -95,8 +95,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     await stepContext.Context.SendActivityAsync(getLecturerMessage, cancellationToken);
                     break;
 
-            
-                
                 case Luis.Conversation.Intent.discussFeeling:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getFeelingMessageText = "TODO: get Feeling flow here";
@@ -124,12 +122,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
                     break;
                 
-                case Luis.Conversation.Intent.None:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getNoneMessageText = "TODO: get None flow here";
-                    var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getNoneMessage, cancellationToken);
-                    break;
+                // case Luis.Conversation.Intent.None:
+                //     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                //     var getNoneMessageText = "TODO: get None flow here";
+                //     var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
+                //     await stepContext.Context.SendActivityAsync(getNoneMessage, cancellationToken);
+                //     break;
                 
                 
                 default:
