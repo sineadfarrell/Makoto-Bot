@@ -20,14 +20,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, UserProfileDialog userProfileDialog, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(topLevelDialog);
+            AddDialog(userProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
             
@@ -68,7 +68,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Conversation.Intent.discussSelf:
-                    // await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
+                   
                     // Initialize UsesrEntities with any entities we may have found in the response.
                     var userInfo = new UserProfile()
                     {
@@ -78,9 +78,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         ModulesTaken = luisResult.Entities.ModulesTaken,
 
                     };
-                    return await stepContext.BeginDialogAsync(nameof(TopLevelDialog),userInfo, cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(UserProfileDialog),userInfo, cancellationToken);
 
                 case Conversation.Intent.discussModule:
+
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getModuleMessageText = "TODO: get Module flow here";
                     var getModuleMessage = MessageFactory.Text(getModuleMessageText, getModuleMessageText, InputHints.IgnoringInput);
