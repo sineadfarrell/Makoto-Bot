@@ -68,7 +68,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Conversation.Intent.discussSelf:
-                    await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
+                    // await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
                     // Initialize UsesrEntities with any entities we may have found in the response.
                     var userInfo = new UserProfile()
                     {
@@ -76,7 +76,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Stage = luisResult.Entities.Stage,
                         NumberOfModules = luisResult.Entities.NumberOfModules,
                         ModulesTaken = luisResult.Entities.ModulesTaken,
-
 
                     };
                     return await stepContext.BeginDialogAsync(nameof(TopLevelDialog),userInfo, cancellationToken);
