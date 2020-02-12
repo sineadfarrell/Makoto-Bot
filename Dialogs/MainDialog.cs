@@ -30,7 +30,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(topLevelDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                IntroStepAsync,
+            
                 ActStepAsync,
                 FinalStepAsync,
             }));
