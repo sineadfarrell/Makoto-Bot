@@ -64,10 +64,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
 
-            var luisResult = await _luisRecognizer.RecognizeAsync<Conversation>(stepContext.Context, cancellationToken);
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
-                case Conversation.Intent.discussSelf:
+                case Luis.Conversation.Intent.greeting:
                    
                     // Initialize UsesrEntities with any entities we may have found in the response.
                     var userInfo = new UserProfile()
@@ -80,7 +80,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
                     return await stepContext.BeginDialogAsync(nameof(UserProfileDialog),userInfo, cancellationToken);
 
-                case Conversation.Intent.discussModule:
+                case Luis.Conversation.Intent.discussModule:
 
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getModuleMessageText = "TODO: get Module flow here";
@@ -88,48 +88,43 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     await stepContext.Context.SendActivityAsync(getModuleMessage, cancellationToken);
                     break;
                 
-                case Conversation.Intent.discussLecturer:
+                case Luis.Conversation.Intent.discussLecturer:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getLecturerMessageText = "TODO: get Lecturer flow here";
                     var getLecturerMessage = MessageFactory.Text(getLecturerMessageText, getLecturerMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getLecturerMessage, cancellationToken);
                     break;
 
-                case Conversation.Intent.discussHobbies:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getHobbiesMessageText = "TODO: get Hobbies flow here";
-                    var getHobbiesMessage = MessageFactory.Text(getHobbiesMessageText, getHobbiesMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getHobbiesMessage, cancellationToken);
-                    break;
+            
                 
-                case Conversation.Intent.discussFeeling:
+                case Luis.Conversation.Intent.discussFeeling:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getFeelingMessageText = "TODO: get Feeling flow here";
                     var getFeelingMessage = MessageFactory.Text(getFeelingMessageText, getFeelingMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getFeelingMessage, cancellationToken);
                     break;
-                case Conversation.Intent.discussCoursework:
+                case Luis.Conversation.Intent.discussExtracurricular:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getCWMessageText = "TODO: get Coursework flow here";
+                    var getCWMessageText = "TODO: get Extracurricular flow here";
                     var getCWMessage = MessageFactory.Text(getCWMessageText, getCWMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getCWMessage, cancellationToken);
                     break;
                 
-                case Conversation.Intent.discussCampus:
+                case Luis.Conversation.Intent.discussCampus:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getCampusMessageText = "TODO: get Campus flow here";
                     var getCampusMessage = MessageFactory.Text(getCampusMessageText, getCampusMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getCampusMessage, cancellationToken);
                     break;
                 
-                case Conversation.Intent.endConversation:
+                case Luis.Conversation.Intent.endConversation:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getEndMessageText = "TODO: get End flow here";
                     var getEndMessage = MessageFactory.Text(getEndMessageText, getEndMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
                     break;
                 
-                case Conversation.Intent.None:
+                case Luis.Conversation.Intent.None:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getNoneMessageText = "TODO: get None flow here";
                     var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
@@ -151,30 +146,30 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         // Shows a warning if the Modules are recognized as entities but they are not in the entity list.
         // In some cases LUIS will recognize the From and To composite entities as a valid cities but the From and To Airport values
         // will be empty if those entity values can't be mapped to a canonical item in the Airport.
-        private static async Task ShowWarningForUnsupportedModule(ITurnContext context, Conversation luisResult, CancellationToken cancellationToken)
-        {
-            var unsupportedModules = new List<string>();
+        // private static async Task ShowWarningForUnsupportedModule(ITurnContext context, Luis.Conversation luisResult, CancellationToken cancellationToken)
+        // {
+        //     var unsupportedModules = new List<string>();
 
-            var fromEntities = luisResult.FromEntities;
-            if (!string.IsNullOrEmpty(fromEntities.Module) && string.IsNullOrEmpty(fromEntities.Opinion))
-            {
-                unsupportedModules.Add(fromEntities.Module);
-            }
+        //     var fromEntities = luisResult.Entities;
+        //     if (!string.IsNullOrEmpty(fromEntities.Module) && string.IsNullOrEmpty(fromEntities.Opinion))
+        //     {
+        //         unsupportedModules.Add(fromEntities.Module);
+        //     }
 
-            var toEntities = luisResult.Entities;
-            if (!string.IsNullOrEmpty(toEntities.Opinion) && string.IsNullOrEmpty(toEntities.Module))
-            {
-                unsupportedModules.Add(toEntities.Module);
-            }
+        //     var toEntities = luisResult.Entities;
+        //     if (!string.IsNullOrEmpty(toEntities.Opinion) && string.IsNullOrEmpty(toEntities.Module))
+        //     {
+        //         unsupportedModules.Add(toEntities.Module);
+        //     }
 
-            if (unsupportedModules.Any())
-            {
-                var messageText = $"I have never heard of {string.Join(" ", unsupportedModules)}";
-                var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
-                await context.SendActivityAsync(message, cancellationToken);
-            }
+        //     if (unsupportedModules.Any())
+        //     {
+        //         var messageText = $"I have never heard of {string.Join(" ", unsupportedModules)}";
+        //         var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
+        //         await context.SendActivityAsync(message, cancellationToken);
+        //     }
 
-        }
+        // }
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var userInfo = (UserProfile)stepContext.Result;

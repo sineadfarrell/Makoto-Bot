@@ -46,10 +46,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private async Task<DialogTurnResult> NumberOfModulesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
 
         {
-            var luisResult = await _luisRecognizer.RecognizeAsync<Conversation>(stepContext.Context, cancellationToken);
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
-                case Conversation.Intent.discussSelf:
+                case Luis.Conversation.Intent.greeting:
                     var userProfile = new UserProfile()
                     {
                         Name = luisResult.Entities.UserName,

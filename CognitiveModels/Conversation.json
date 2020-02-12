@@ -952,6 +952,22 @@
       ]
     },
     {
+      "text": "i'm studying ethical computer hacking",
+      "intent": "discussModule",
+      "entities": [
+        {
+          "entity": "Module",
+          "startPos": 13,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "i'm studying human language technolgies",
+      "intent": "discussModule",
+      "entities": []
+    },
+    {
       "text": "i'm taking 4 modules",
       "intent": "discussModule",
       "entities": [
@@ -1028,6 +1044,17 @@
           "entity": "Module",
           "startPos": 98,
           "endPos": 120
+        }
+      ]
+    },
+    {
+      "text": "i'm taking human language technologies",
+      "intent": "discussModule",
+      "entities": [
+        {
+          "entity": "Module",
+          "startPos": 11,
+          "endPos": 37
         }
       ]
     },
