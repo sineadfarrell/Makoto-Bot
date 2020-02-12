@@ -20,19 +20,18 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, ModuleDialog moduleDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            // AddDialog(new TextPrompt(nameof(TextPrompt)));
-            // AddDialog(dialog: UserProfileDialog);
+            AddDialog(topLevelDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                // ActStepAsync,
+                ActStepAsync,
                 FinalStepAsync,
             }));
 
@@ -40,7 +39,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
         private const string UserInfo = "value-userInfo";
-       
+
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -56,15 +55,15 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
-    
-      
+
+
 
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), new UserProfile(), cancellationToken);
             }
 
 
@@ -73,13 +72,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 case Conversation.Intent.discussSelf:
                     await ShowWarningForUnsupportedModule(stepContext.Context, luisResult, cancellationToken);
-                    // Initialize ModuleDetails with any entities we may have found in the response.
-                    var moduleDetails = new UserProfile()
+                    // Initialize UsesrEntities with any entities we may have found in the response.
+                    var userInfo = new UserProfile()
                     {
                         Name = luisResult.Entities.UserName,
-                        
+                        Stage = luisResult.Entities.Stage,
+                        NumberOfModules = luisResult.Entities.NumberOfModules,
+                        ModulesTaken = luisResult.Entities.ModulesTaken,
+
+
                     };
-                    return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(TopLevelDialog),userInfo, cancellationToken);
 
 
                 default:

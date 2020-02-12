@@ -39,7 +39,10 @@ namespace Microsoft.BotBuilderSamples
             public string Lecturer;
             public string Opinion;
             public string Feeling; 
+            public string Stage;
+            public int NumberOfModules;
 
+            public List<string> ModulesTaken;
             public string UserName;
         
 
