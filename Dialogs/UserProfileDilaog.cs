@@ -26,6 +26,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
 
             NameStepAsync,
+            NumberOfModulesAsync,
             FinalStepAsync,
 
             }));
