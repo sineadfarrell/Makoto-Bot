@@ -51,7 +51,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "Hi! I'm Makoto. I would like to talk to you about your university experience. ";
+            var messageText = stepContext.Options?.ToString() ?? "Hi I'm Makoto, today I want to talk to you about your University experience. Enter your name to begin  the conversation.";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
@@ -141,38 +141,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.NextAsync(null, cancellationToken);
 
         }
-        // Shows a warning if the Modules are recognized as entities but they are not in the entity list.
-        // In some cases LUIS will recognize the From and To composite entities as a valid cities but the From and To Airport values
-        // will be empty if those entity values can't be mapped to a canonical item in the Airport.
-        // private static async Task ShowWarningForUnsupportedModule(ITurnContext context, Luis.Conversation luisResult, CancellationToken cancellationToken)
-        // {
-        //     var unsupportedModules = new List<string>();
-
-        //     var fromEntities = luisResult.Entities;
-        //     if (!string.IsNullOrEmpty(fromEntities.Module) && string.IsNullOrEmpty(fromEntities.Opinion))
-        //     {
-        //         unsupportedModules.Add(fromEntities.Module);
-        //     }
-
-        //     var toEntities = luisResult.Entities;
-        //     if (!string.IsNullOrEmpty(toEntities.Opinion) && string.IsNullOrEmpty(toEntities.Module))
-        //     {
-        //         unsupportedModules.Add(toEntities.Module);
-        //     }
-
-        //     if (unsupportedModules.Any())
-        //     {
-        //         var messageText = $"I have never heard of {string.Join(" ", unsupportedModules)}";
-        //         var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
-        //         await context.SendActivityAsync(message, cancellationToken);
-        //     }
-
-        // }
+        
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var userInfo = (UserProfile)stepContext.Result;
 
-            string status = "Thank you so much for talking to me today!";
+            string status = "Thank you so much for talking to me today! Bye!";
 
             await stepContext.Context.SendActivityAsync(status);
 
@@ -181,22 +155,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
-        // private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     // If the child dialog ("BookingDialog") was cancelled, the user failed to confirm or if the intent wasn't BookFlight
-        //     // the Result here will be null.
-        //     if (stepContext.Result is ModuleDetails result)
-        //     {
-
-        //         var messageText = $"Thank you for telling me about {result.ModuleName} with  {result.Lecturer}";
-        //         var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
-        //         await stepContext.Context.SendActivityAsync(message, cancellationToken);
-        //     }
-
-        //     // Restart the main dialog with a different message the second time around
-        //     var promptMessage = "What else can I do for you?";
-        //     return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
-        // }
-
+        
     }
 }
