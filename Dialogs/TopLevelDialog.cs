@@ -24,6 +24,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
              {
                NameStepAsync,
                NumberOfModulesAsync,
+               FinalStepAsync
 
              };
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
@@ -69,5 +70,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             return await stepContext.NextAsync(null, cancellationToken);
         }
+         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if ((bool)stepContext.Result)
+            {
+                var UserDetails = (UserProfile)stepContext.Options;
+
+                return await stepContext.EndDialogAsync(UserDetails, cancellationToken);
+            }
+
+            return await stepContext.EndDialogAsync(null, cancellationToken);
+        }
+
     }
 }
