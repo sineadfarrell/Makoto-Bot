@@ -20,14 +20,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, UserProfileDialog userProfileDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(userProfileDialog);
+            AddDialog(topLevelDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -60,7 +60,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), new UserProfile(), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), new UserProfile(), cancellationToken);
             }
 
 
@@ -78,7 +78,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Module = luisResult.Entities.Module,
 
                     };
-                    return await stepContext.BeginDialogAsync(nameof(UserProfileDialog),userInfo, cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(TopLevelDialog),userInfo, cancellationToken);
 
                 case Luis.Conversation.Intent.discussModule:
 
@@ -122,12 +122,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
                     break;
                 
-                // case Luis.Conversation.Intent.None:
-                //     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                //     var getNoneMessageText = "TODO: get None flow here";
-                //     var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
-                //     await stepContext.Context.SendActivityAsync(getNoneMessage, cancellationToken);
-                //     break;
+                case Luis.Conversation.Intent.None:
+                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                    var getNoneMessageText = "TODO: get None flow here";
+                    var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(getNoneMessage, cancellationToken);
+                    break;
                 
                 
                 default:
