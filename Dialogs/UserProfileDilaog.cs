@@ -14,7 +14,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     public class UserProfileDialog : ComponentDialog
     {
         private IStatePropertyAccessor<UserProfile> _userProfileAccessor;
-
+        private readonly ConversationRecognizer _luisRecognizer;
         public UserProfileDialog(UserState userState)
             : base(nameof(UserProfileDialog))
         {
@@ -43,6 +43,32 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // stepContext.Values["stage"] = ((FoundChoice)stepContext.Result).Value;
 
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") }, cancellationToken);
+        }
+         private async Task<DialogTurnResult> NumberOfModulesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+
+        {
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            switch (luisResult.TopIntent().intent)
+            {
+                case Luis.Conversation.Intent.greeting:
+                    var userProfile = new UserProfile()
+                    {
+                        Name = luisResult.Entities.UserName,
+                    };
+
+                    await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {stepContext.Result}."), cancellationToken);
+
+                    return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("How many modules are you taking?") }, cancellationToken);
+
+                default:
+                    // Catch all for unhandled intents
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                    break;
+            }
+
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
