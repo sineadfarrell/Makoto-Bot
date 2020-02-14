@@ -52,7 +52,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             var moduleDetails = (ModuleDetails)stepContext.Options;
 
-            moduleDetails.Lecturer = (string)stepContext.Result;
+            // moduleDetails.Lecturer = (string)stepContext.Result;
 
             var messageText = $"Who is the lecturer for the {moduleDetails.ModuleName} module?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
@@ -66,7 +66,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
              var moduleDetails = (ModuleDetails)stepContext.Options;
 
-            moduleDetails.Exam = (string)stepContext.Result;
+            // moduleDetails.Exam = (string)stepContext.Result;
 
             var messageText = $"Do you have a final exam in {moduleDetails.ModuleName}?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
@@ -80,7 +80,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
              var moduleDetails = (ModuleDetails)stepContext.Options;
 
-            moduleDetails.ContinousAssesment = (string)stepContext.Result;
+            // moduleDetails.ContinousAssesment = (string)stepContext.Result;
 
             var messageText = $"Is there a continous assesment component for the {moduleDetails.ModuleName} module?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
@@ -93,7 +93,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             var moduleDetails = (ModuleDetails)stepContext.Options;
 
-            moduleDetails.Opinion = (string)stepContext.Result;
+            // moduleDetails.Opinion = (string)stepContext.Result;
 
             var messageText = $"Do you like {moduleDetails.ModuleName}?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
