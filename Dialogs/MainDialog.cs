@@ -26,6 +26,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             _luisRecognizer = luisRecognizer;
             Logger = logger;
 
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(userProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
