@@ -53,7 +53,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 case Luis.Conversation.Intent.greeting:
                    
-                    var Name = luisResult.Entities.UserName;
+                var Name = luisResult.Entities.UserName;
                  await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {Name}."), cancellationToken);
 
                     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("How many modules are you taking?") }, cancellationToken);
