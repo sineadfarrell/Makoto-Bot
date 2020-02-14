@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
@@ -61,7 +61,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             if (!_luisRecognizer.IsConfigured)
             {
-                return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), new UserProfile(), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), new UserProfile(), cancellationToken);
             }
 
 
