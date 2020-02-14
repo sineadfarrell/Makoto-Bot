@@ -20,14 +20,15 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, TopLevelDialog topLevelDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(topLevelDialog);
+            AddDialog(userProfileDialog);
+            AddDialog(moduleDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -78,7 +79,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         // Module = luisResult.Entities.Module,
 
                     };
-                    return await stepContext.BeginDialogAsync(nameof(TopLevelDialog),userInfo, cancellationToken);
+                    
+                    if(string.IsNullOrEmpty(userInfo.Name.First())){
+                            return await stepContext.BeginDialogAsync(nameof(UserProfileDialog),userInfo, cancellationToken);
+                    }
+                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog),userInfo, cancellationToken);
 
                 case Luis.Conversation.Intent.discussModule:
 
