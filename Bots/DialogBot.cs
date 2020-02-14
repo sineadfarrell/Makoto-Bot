@@ -34,11 +34,11 @@ namespace Microsoft.BotBuilderSamples.Bots
             Logger = logger;
         }
 
-        // protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        // {
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
             
-        //     await turnContext.SendActivityAsync("To begin the conversation type anything");
-        // }
+            await turnContext.SendActivityAsync("When you are ready to begin the conversation type anything");
+        }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
