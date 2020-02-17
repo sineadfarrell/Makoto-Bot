@@ -140,7 +140,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that.)";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
                     break;
@@ -154,7 +154,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             var userInfo = (UserProfile)stepContext.Result;
 
-            string status = "Thank you so much for talking to me today! Bye!";
+            string status = "Please try rephrasing your message";
 
             await stepContext.Context.SendActivityAsync(status);
 
