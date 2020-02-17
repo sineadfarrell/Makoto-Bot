@@ -52,7 +52,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "Hi I'm Makoto, today I want to talk to you about your University experience. What aspect of university would you like to talk about?";
+            var messageText = stepContext.Options?.ToString() ?? "What aspect of university would you like to talk about?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
@@ -140,7 +140,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that.)";
+                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
                     break;
@@ -154,9 +154,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             var userInfo = (UserProfile)stepContext.Result;
 
-            string status = "Please try rephrasing your message";
+            // string status = "Please try rephrasing your message";
 
-            await stepContext.Context.SendActivityAsync(status);
+            // await stepContext.Context.SendActivityAsync(status);
 
             // var accessor = .CreateProperty<UserProfile>(nameof(UserProfile));
             // await accessor.SetAsync(stepContext.Context, userInfo, cancellationToken);
