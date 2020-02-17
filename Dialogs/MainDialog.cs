@@ -31,8 +31,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(moduleDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                IntroStepAsync,
+                
                 ActStepAsync,
+                IntroStepAsync,
                 // FinalStepAsync,
             }));
 
@@ -131,12 +132,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
                     break;
 
-                // case Luis.Conversation.Intent.None:
-                //     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                //     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                //     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                case Luis.Conversation.Intent.None:
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
                 
-                //     return await this.IntroStepAsync(stepContext, cancellationToken);
+                    return await stepContext.NextAsync(null, cancellationToken);
 
                 default:
                     // Catch all for unhandled intents
