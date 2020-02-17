@@ -33,7 +33,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 IntroStepAsync,
                 ActStepAsync,
-                FinalStepAsync,
+                // FinalStepAsync,
             }));
 
             // The initial child Dialog to run
@@ -152,16 +152,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var userInfo = (UserProfile)stepContext.Result;
-
-            // string status = "Please try rephrasing your message";
-
-            // await stepContext.Context.SendActivityAsync(status);
-
-            // var accessor = .CreateProperty<UserProfile>(nameof(UserProfile));
-            // await accessor.SetAsync(stepContext.Context, userInfo, cancellationToken);
-
-            return await stepContext.EndDialogAsync(null, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
     }
