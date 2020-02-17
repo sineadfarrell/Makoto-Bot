@@ -132,18 +132,19 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     break;
                 
                 case Luis.Conversation.Intent.None:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getNoneMessageText = "TODO: get None flow here";
-                    var getNoneMessage = MessageFactory.Text(getNoneMessageText, getNoneMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getNoneMessage, cancellationToken);
-                    break;
-                
-                
-                default:
-                    // Catch all for unhandled intents
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                    AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]{
+                    ActStepAsync,
+                    }));
+                    break;
+                
+                default:
+                    // Catch all for unhandled intents
+                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
                     break;
 
             }
