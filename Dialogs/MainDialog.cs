@@ -57,7 +57,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        public async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
             {
@@ -69,34 +69,34 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Luis.Conversation.Intent.greeting:
-                   
+
                     // Initialize UsesrEntities with any entities we may have found in the response.
                     var userInfo = new UserProfile()
                     {
                         Name = luisResult.Entities.UserName,
 
                     };
-                    
-                    if(string.IsNullOrEmpty(userInfo.Name.First())){
-                            return await stepContext.BeginDialogAsync(nameof(UserProfileDialog),userInfo, cancellationToken);
+
+                    if (string.IsNullOrEmpty(userInfo.Name.First()))
+                    {
+                        return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), userInfo, cancellationToken);
                     }
-                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog),userInfo, cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog), userInfo, cancellationToken);
 
                 case Luis.Conversation.Intent.discussModule:
 
-                     var moduleInfo = new ModuleDetails()
+                    var moduleInfo = new ModuleDetails()
                     {
-                       ModuleName = luisResult.Entities.Module,
-                       Opinion = luisResult.Entities.Opinion,
-                       Lecturer = luisResult.Entities.Lecturer,
-                       Emotion = luisResult.Entities.Emotion,
-                       
+                        ModuleName = luisResult.Entities.Module,
+                        Opinion = luisResult.Entities.Opinion,
+                        Lecturer = luisResult.Entities.Lecturer,
+                        Emotion = luisResult.Entities.Emotion,
 
                     };
-                
-                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog),moduleInfo, cancellationToken);
 
-                
+                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog), moduleInfo, cancellationToken);
+
+
                 case Luis.Conversation.Intent.discussLecturer:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getLecturerMessageText = "TODO: get Lecturer flow here";
@@ -116,30 +116,29 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var getCWMessage = MessageFactory.Text(getCWMessageText, getCWMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getCWMessage, cancellationToken);
                     break;
-                
+
                 case Luis.Conversation.Intent.discussCampus:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getCampusMessageText = "TODO: get Campus flow here";
                     var getCampusMessage = MessageFactory.Text(getCampusMessageText, getCampusMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getCampusMessage, cancellationToken);
                     break;
-                
+
                 case Luis.Conversation.Intent.endConversation:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getEndMessageText = "TODO: get End flow here";
                     var getEndMessage = MessageFactory.Text(getEndMessageText, getEndMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
                     break;
-                
+
                 case Luis.Conversation.Intent.None:
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                    AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]{
-                    ActStepAsync,
-                    }));
-                    break;
-                
+                   
+                   
+                    return new DialogTurnResult(DialogTurnStatus.Waiting);
+
                 default:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
@@ -151,7 +150,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.NextAsync(null, cancellationToken);
 
         }
-        
+
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var userInfo = (UserProfile)stepContext.Result;
@@ -165,6 +164,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
-        
+
     }
 }
