@@ -135,7 +135,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                
                     return await stepContext.NextAsync(null, cancellationToken);
 
                 default:
