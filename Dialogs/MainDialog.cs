@@ -142,7 +142,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
-                    await stepContext.CancelAllDialogsAsync();
+                   await stepContext.NextAsync(null, cancellationToken);
                     break;
 
             }
