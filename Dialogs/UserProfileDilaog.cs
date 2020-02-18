@@ -17,7 +17,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
 
-        public UserProfileDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger, ModuleDialog moduleDialog)
+        public UserProfileDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger, ModuleDialog moduleDialog)
             : base(nameof(UserProfileDialog))
         {
             // _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
