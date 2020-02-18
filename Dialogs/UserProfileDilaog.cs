@@ -21,7 +21,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-          
+            
+          AddDialog(new TextPrompt(nameof(TextPrompt)));
            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
 
@@ -33,7 +34,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             // Add named dialogs to the DialogSet. These names are saved in the dialog state.
 
-            AddDialog(new TextPrompt(nameof(TextPrompt)));
+            
 
 
             // The initial child Dialog to run.

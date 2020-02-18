@@ -21,7 +21,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             : base(nameof(ModuleDialog))
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
             AddDialog(userProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
