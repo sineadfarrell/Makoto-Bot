@@ -19,11 +19,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         public UserProfileDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger, UserState userState, ModuleDialog moduleDialog)
             : base(nameof(UserProfileDialog))
         {
-            _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
+            // _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
             _luisRecognizer = luisRecognizer;
             Logger = logger;
-            AddDialog(new TextPrompt(nameof(TextPrompt)));
             
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(moduleDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -33,17 +33,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             }));
 
-            // Add named dialogs to the DialogSet. These names are saved in the dialog state.
-
-            
-
-
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
         private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // stepContext.Values["stage"] = ((FoundChoice)stepContext.Result).Value;
 
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Hello! Could you please tell me your name.") }, cancellationToken);
         }

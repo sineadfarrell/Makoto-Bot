@@ -19,8 +19,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         
         public ModuleDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger)
             : base(nameof(ModuleDialog))
-            
-        {   _luisRecognizer = luisRecognizer;
+
+        {   
+            _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(userProfileDialog);
