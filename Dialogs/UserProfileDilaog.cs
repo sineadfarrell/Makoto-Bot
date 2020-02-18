@@ -15,20 +15,19 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     {
         private IStatePropertyAccessor<UserProfile> _userProfileAccessor;
         private readonly ConversationRecognizer _luisRecognizer;
-        public UserProfileDialog(UserState userState)
+        public UserProfileDialog(UserState userState, ModuleDialog moduleDialog)
             : base(nameof(UserProfileDialog))
         {
             _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             
-          AddDialog(new TextPrompt(nameof(TextPrompt)));
-           AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
+            AddDialog(moduleDialog);
+            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
 
             NameStepAsync,
             NumberOfModulesAsync,
-            FinalStepAsync,
 
             }));
 
@@ -44,43 +43,25 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         {
             // stepContext.Values["stage"] = ((FoundChoice)stepContext.Result).Value;
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Hello! Could you please tell me your name.") }, cancellationToken);
         }
          private async Task<DialogTurnResult> NumberOfModulesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
 
         {
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            switch (luisResult.TopIntent().intent)
-            {
-                case Luis.Conversation.Intent.greeting:
-                   
-                var Name = luisResult.Entities.UserName;
-                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {Name}."), cancellationToken);
+            var userInfo = new UserProfile()
+                    {
+                        Name = luisResult.Entities.UserName,
 
-                    return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("How many modules are you taking?") }, cancellationToken);
+                    };
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name}, it's great to meet you! Let's talk about your modules"), cancellationToken);
 
-                default:
-                    // Catch all for unhandled intents
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                    break;
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog), userInfo, cancellationToken);
             }
 
-            return await stepContext.NextAsync(null, cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if ((bool)stepContext.Result)
-            {
-                var UserDetails = (UserProfile)stepContext.Options;
-
-                return await stepContext.EndDialogAsync(UserDetails, cancellationToken);
-            }
-
-            return await stepContext.EndDialogAsync(null, cancellationToken);
-        }
-
+           
+        
     }
+
+       
 }
