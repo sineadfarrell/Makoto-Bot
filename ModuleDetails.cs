@@ -17,7 +17,7 @@ namespace Microsoft.BotBuilderSamples
 
         public string[] ContinousAssesment {get; set;}
 
-        public int NumberOfModules {get; set;}
+        public string[] NumberOfModules {get; set;}
 
         }
     }

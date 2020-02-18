@@ -6,22 +6,27 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Logging;
 using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
     public class ModuleDialog : ComponentDialog
     {
+         private readonly ConversationRecognizer _luisRecognizer;
+        protected readonly ILogger Logger;
         private const string NumberModulesMsgText = "How many modules are you doing?";
         
-        public ModuleDialog()
+        public ModuleDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger)
             : base(nameof(ModuleDialog))
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
+            AddDialog(userProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 NumberModulesStepAsync,
+                NameOfModules, 
                 LecturerStepAsync,
                 ExamStepAsync,
                 CAStepAsync,
@@ -35,17 +40,56 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
         private async Task<DialogTurnResult> NumberModulesStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var moduleDetails = (ModuleDetails)stepContext.Options;
+            if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
+            
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            
+            var moduleDetails = new ModuleDetails(){
+                NumberOfModules = luisResult.Entities.NumberOfModules,
+            };
+
+            if (moduleDetails.NumberOfModules == null)
+            {
+                var promptMessage = MessageFactory.Text(NumberModulesMsgText, NumberModulesMsgText, InputHints.ExpectingInput);
+                await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            }
+            var messageText = $"Wow {moduleDetails.NumberOfModules.GetValue(0)}, what is your favourite module?";
+            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.NextAsync(moduleDetails.NumberOfModules, cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> NameOfModules(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            var moduleDetails = new ModuleDetails(){
+                ModuleName = luisResult.Entities.Module,
+            };
 
             if (moduleDetails.ModuleName == null)
             {
-                var promptMessage = MessageFactory.Text(NumberModulesMsgText, NumberModulesMsgText, InputHints.ExpectingInput);
+                var ModuleMsgText = "What modules are you taking?";
+                var promptMessage = MessageFactory.Text(ModuleMsgText, ModuleMsgText, InputHints.ExpectingInput);
                 return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
             }
+            var messageText = $"Wow {moduleDetails.NumberOfModules.GetValue(0)}, what is your favourite module?";
+            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.NextAsync(moduleDetails.NumberOfModules, cancellationToken);
 
-            return await stepContext.NextAsync(moduleDetails.ModuleName, cancellationToken);
+        
         }
-
         
         private async Task<DialogTurnResult> LecturerStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
