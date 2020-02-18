@@ -60,7 +60,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var promptMessage = MessageFactory.Text(NumberModulesMsgText, NumberModulesMsgText, InputHints.ExpectingInput);
                 await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
             }
-            var messageText = $"Wow {moduleDetails.NumberOfModules.ToString()}, what is your favourite module?";
+            var messageText = $"Wow {luisResult.Entities.NumberOfModules}, what is your favourite module?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.NextAsync(moduleDetails.NumberOfModules, cancellationToken);
         }
