@@ -62,7 +62,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
             var messageText = $"Wow {luisResult.Entities.NumberOfModules}, what is your favourite module?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.NextAsync(moduleDetails.NumberOfModules, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> NameOfModules(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -87,7 +87,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
             var messageText = $"Wow {moduleDetails.NumberOfModules.GetValue(0)}, what is your favourite module?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.NextAsync(moduleDetails.NumberOfModules, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
 
         
         }
@@ -103,7 +103,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
 
             // return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(moduleDetails.Lecturer, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
 
         }
 
@@ -117,7 +117,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
 
             //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(moduleDetails.Exam, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
 
@@ -131,7 +131,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
 
             //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(moduleDetails.ContinousAssesment, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
          private async Task<DialogTurnResult> OpinionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -144,7 +144,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
 
             //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(moduleDetails.Opinion, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
         }
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
