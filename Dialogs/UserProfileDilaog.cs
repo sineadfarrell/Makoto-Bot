@@ -16,6 +16,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
        
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
+
         public UserProfileDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger, ModuleDialog moduleDialog)
             : base(nameof(UserProfileDialog))
         {
@@ -52,7 +53,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name}, it's great to meet you! Let's talk about your modules"), cancellationToken);
 
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog), userInfo, cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
             }
 
            
