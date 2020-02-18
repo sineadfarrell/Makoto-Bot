@@ -13,10 +13,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 {
     public class UserProfileDialog : ComponentDialog
     {
-        private IStatePropertyAccessor<UserProfile> _userProfileAccessor;
+       
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
-        public UserProfileDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger, UserState userState, ModuleDialog moduleDialog)
+        public UserProfileDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger, ModuleDialog moduleDialog)
             : base(nameof(UserProfileDialog))
         {
             // _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
