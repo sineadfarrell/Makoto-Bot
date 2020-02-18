@@ -74,10 +74,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var userInfo = new UserProfile()
                     {
                         Name = luisResult.Entities.UserName,
-
                     };
 
-                    if (string.IsNullOrEmpty(userInfo.Name.First()))
+                    if (userInfo.Name == null)
                     {
                         return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), userInfo, cancellationToken);
                     }
