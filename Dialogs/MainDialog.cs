@@ -77,7 +77,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                     };
 
-                    if (userInfo.Name == null)
+                    if (string.IsNullOrEmpty(userInfo.Name.First()))
                     {
                         return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), userInfo, cancellationToken);
                     }
