@@ -26,6 +26,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
+                IntroStepAsync,
                 NumberModulesStepAsync,
                 NameOfModules, 
                 LecturerStepAsync,
@@ -37,6 +38,21 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
+        }
+        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
+
+            // Use the text provided in FinalStepAsync or the default if it is the first time.
+            var messageText = stepContext.Options?.ToString() ?? "How many modules are you doing";
+            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
 
         private async Task<DialogTurnResult> NumberModulesStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
