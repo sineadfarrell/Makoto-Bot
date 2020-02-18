@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     {
          private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
-        private const string NumberModulesMsgText = "How many modules are you doing?";
+        
         
         public ModuleDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
             : base(nameof(ModuleDialog))
@@ -32,7 +32,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 LecturerStepAsync,
                 ExamStepAsync,
                 CAStepAsync,
-                OpinionStepAsync,
+                // OpinionStepAsync,
                 FinalStepAsync,
             }));
 
@@ -71,12 +71,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
 
-            if (moduleDetails.NumberOfModules == null)
-            {
-                var promptMessage = MessageFactory.Text(NumberModulesMsgText, NumberModulesMsgText, InputHints.ExpectingInput);
-                await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            }
-            var messageText = $"Wow {luisResult.Entities.NumberOfModules}, what is your favourite module?";
+            // if (moduleDetails.NumberOfModules == null)
+            // {
+            //     string NumberModulesMsgText = "How many modules are you doing?";
+            //     var promptMessage = MessageFactory.Text(NumberModulesMsgText, NumberModulesMsgText, InputHints.ExpectingInput);
+            //     await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            // }
+
+            var messageText = $"Wow {moduleDetails.NumberOfModules}, What modules are you taking??";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -95,13 +97,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
 
-            if (moduleDetails.ModuleName == null)
-            {
-                var ModuleMsgText = "What modules are you taking?";
-                var promptMessage = MessageFactory.Text(ModuleMsgText, ModuleMsgText, InputHints.ExpectingInput);
-                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            }
-            var messageText = $"Wow {moduleDetails.NumberOfModules.GetValue(0)}, what is your favourite module?";
+            // if (moduleDetails.ModuleName == null)
+            // {
+            //     var ModuleMsgText = "What modules are you taking?";
+            //     var promptMessage = MessageFactory.Text(ModuleMsgText, ModuleMsgText, InputHints.ExpectingInput);
+            //     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            // }
+            var messageText = $"I've heard they are very interesting, what is your favourite module?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.NextAsync(null, cancellationToken);
 
