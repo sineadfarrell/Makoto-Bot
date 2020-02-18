@@ -61,8 +61,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
             }
             var messageText = $"Wow {luisResult.Entities.NumberOfModules}, what is your favourite module?";
-            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.NextAsync(null, cancellationToken);
+            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+            return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
 
         private async Task<DialogTurnResult> NameOfModules(WaterfallStepContext stepContext, CancellationToken cancellationToken)
