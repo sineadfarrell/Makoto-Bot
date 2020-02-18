@@ -51,7 +51,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Name = luisResult.Entities.UserName,
 
                     };
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name}, it's great to meet you! Let's talk about your modules"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.ToString()}, it's great to meet you! Let's talk about your modules"), cancellationToken);
 
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
             }
