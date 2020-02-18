@@ -15,11 +15,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     {
         private IStatePropertyAccessor<UserProfile> _userProfileAccessor;
         private readonly ConversationRecognizer _luisRecognizer;
-        public UserProfileDialog(UserState userState, ModuleDialog moduleDialog)
+        protected readonly ILogger Logger;
+        public UserProfileDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger, UserState userState, ModuleDialog moduleDialog)
             : base(nameof(UserProfileDialog))
         {
             _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
-
+            _luisRecognizer = luisRecognizer;
+            Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             
             AddDialog(moduleDialog);
