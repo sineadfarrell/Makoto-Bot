@@ -17,14 +17,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         private const string NumberModulesMsgText = "How many modules are you doing?";
         
-        public ModuleDialog(ConversationRecognizer luisRecognizer,  UserProfileDialog userProfileDialog,  ILogger<ModuleDialog> logger)
+        public ModuleDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
             : base(nameof(ModuleDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(userProfileDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 NumberModulesStepAsync,
