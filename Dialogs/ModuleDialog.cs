@@ -24,6 +24,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(lecturerDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -150,7 +151,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussLecturer)){
-            return await stepContext.BeginDialogAsync(nameof(LecturtDialog), moduleDetails, cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleDetails, cancellationToken);
            }
 
            

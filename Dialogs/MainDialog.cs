@@ -97,11 +97,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
 
                 case Luis.Conversation.Intent.discussLecturer:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getLecturerMessageText = "TODO: get Lecturer flow here";
-                    var getLecturerMessage = MessageFactory.Text(getLecturerMessageText, getLecturerMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getLecturerMessage, cancellationToken);
-                    break;
+                     var moduleInfoLec = new ModuleDetails()
+                    {
+                        ModuleName = luisResult.Entities.Module,
+                        Opinion = luisResult.Entities.Opinion,
+                        Lecturer = luisResult.Entities.Lecturer,
+                        Emotion = luisResult.Entities.Emotion,
+
+                    };
+
+                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleInfoLec, cancellationToken);
+
 
                 case Luis.Conversation.Intent.discussFeeling:
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
