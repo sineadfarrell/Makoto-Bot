@@ -49,10 +49,6 @@
       "roles": []
     },
     {
-      "name": "Number",
-      "roles": []
-    },
-    {
       "name": "NumberOfModules",
       "roles": []
     },
@@ -85,7 +81,13 @@
     {
       "text": "5",
       "intent": "discussModule",
-      "entities": []
+      "entities": [
+        {
+          "entity": "NumberOfModules",
+          "startPos": 0,
+          "endPos": 0
+        }
+      ]
     },
     {
       "text": "anthony ventresque is my favourite lecturer",
@@ -485,7 +487,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 12,
           "endPos": 15
         }
@@ -598,7 +600,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 8,
           "endPos": 10
         }
@@ -756,7 +758,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 7,
           "endPos": 9
         }
@@ -1007,7 +1009,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 10,
           "endPos": 14
         }
@@ -1018,7 +1020,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 10,
           "endPos": 12
         }
@@ -1115,7 +1117,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 11,
           "endPos": 11
         }
@@ -1378,6 +1380,17 @@
       ]
     },
     {
+      "text": "my favourite module is hlt",
+      "intent": "discussModule",
+      "entities": [
+        {
+          "entity": "Module",
+          "startPos": 23,
+          "endPos": 25
+        }
+      ]
+    },
+    {
       "text": "my favourite modules are with the lecturer anthony ventresque",
       "intent": "discussLecturer",
       "entities": [
@@ -1531,7 +1544,7 @@
       "intent": "discussModule",
       "entities": [
         {
-          "entity": "Number",
+          "entity": "NumberOfModules",
           "startPos": 21,
           "endPos": 24
         }
