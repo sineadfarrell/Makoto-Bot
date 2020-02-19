@@ -7,6 +7,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
@@ -71,7 +72,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
           //TODO : add exception if they say zero, 0, none etc
 
-            var messageText = $"Wow {luisResult.Entities.NumberOfModules}, what is your favourite module?";
+            var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()}, what is your favourite module?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
