@@ -99,17 +99,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), moduleInfo, cancellationToken);
 
 
-                case Luis.Conversation.Intent.discussLecturer:
-                     var moduleInfoLec = new ModuleDetails()
-                    {
-                        ModuleName = luisResult.Entities.Module,
-                        Opinion = luisResult.Entities.Opinion,
-                        Lecturer = luisResult.Entities.Lecturer,
-                        Emotion = luisResult.Entities.Emotion,
+                // case Luis.Conversation.Intent.discussLecturer:
+                //      var moduleInfoLec = new ModuleDetails()
+                //     {
+                //         ModuleName = luisResult.Entities.Module,
+                //         Opinion = luisResult.Entities.Opinion,
+                //         Lecturer = luisResult.Entities.Lecturer,
+                //         Emotion = luisResult.Entities.Emotion,
 
-                    };
+                //     };
 
-                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleInfoLec, cancellationToken);
+                //     return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleInfoLec, cancellationToken);
 
                 // case Luis.Conversation.Intent.discussExtracurricular:
                 //     return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken);
