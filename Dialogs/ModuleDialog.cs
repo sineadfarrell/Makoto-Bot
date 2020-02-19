@@ -17,7 +17,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public ModuleDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
+        public ModuleDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger, LecturerDialog lecturerDialog)
             : base(nameof(ModuleDialog))
 
         {   
@@ -29,10 +29,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 IntroStepAsync,
                 NumberModulesStepAsync,
                 NameOfModules, 
-                LecturerStepAsync,
-                ExamStepAsync,
-                CAStepAsync,
-                // OpinionStepAsync,
+               
                 FinalStepAsync,
             }));
 
@@ -71,14 +68,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
 
-            // if (moduleDetails.NumberOfModules == null)
-            // {
-            //     string NumberModulesMsgText = "How many modules are you doing?";
-            //     var promptMessage = MessageFactory.Text(NumberModulesMsgText, NumberModulesMsgText, InputHints.ExpectingInput);
-            //     await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            // }
+          //TODO : add exception if they say zero, 0, none etc
 
-            var messageText = $"Wow {luisResult.Entities.NumberOfModules}, What modules are you taking??";
+            var messageText = $"Wow {luisResult.Entities.NumberOfModules}, what is your favourite module?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -98,13 +90,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
 
-            // if (moduleDetails.ModuleName == null)
-            // {
-            //     var ModuleMsgText = "What modules are you taking?";
-            //     var promptMessage = MessageFactory.Text(ModuleMsgText, ModuleMsgText, InputHints.ExpectingInput);
-            //     return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            // }
-            var messageText = $"I've heard they are very interesting, what is your favourite module?";
+           
+            var messageText = $"I've heard it very interesting, what do you like about the module?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.NextAsync(null, cancellationToken);
 
@@ -128,53 +115,51 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
         private async Task<DialogTurnResult> ExamStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-             var moduleDetails = (ModuleDetails)stepContext.Options;
+             if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-            // moduleDetails.Exam = (string)stepContext.Result;
-
-            var messageText = $"Do you have a final exam in {moduleDetails.ModuleName}?";
-            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-
-            //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            
+            var moduleDetails = new ModuleDetails(){
+                ModuleName = luisResult.Entities.Module,
+            };
+            
+            var messageText = $"I've heard it very interesting, do you have a final exam?";
+            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.NextAsync(null, cancellationToken);
+
         }
 
 
-    private async Task<DialogTurnResult> CAStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-             var moduleDetails = (ModuleDetails)stepContext.Options;
-
-            // moduleDetails.ContinousAssesment = (string)stepContext.Result;
-
-            var messageText = $"Is there a continous assesment component for the {moduleDetails.ModuleName} module?";
-            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-
-            //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(null, cancellationToken);
-        }
-
-         private async Task<DialogTurnResult> OpinionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var moduleDetails = (ModuleDetails)stepContext.Options;
-
-            // moduleDetails.Opinion = (string)stepContext.Result;
-
-            var messageText = $"Do you like {moduleDetails.ModuleName}?";
-            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-
-            //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(null, cancellationToken);
-        }
+    
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if ((bool)stepContext.Result)
+            if (!_luisRecognizer.IsConfigured)
             {
-                var moduleDetails = (ModuleDetails)stepContext.Options;
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-                return await stepContext.EndDialogAsync(moduleDetails, cancellationToken);
+                return await stepContext.NextAsync(null, cancellationToken);
             }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+             var moduleDetails = new ModuleDetails(){
+                ModuleName = luisResult.Entities.Module,
+            };
+           if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussLecturer)){
+            return await stepContext.BeginDialogAsync(nameof(LecturtDialog), moduleDetails, cancellationToken);
+           }
 
-            return await stepContext.EndDialogAsync(null, cancellationToken);
+           
+            var messageText = $"I've heard it very interesting, what do you like about the module?";
+            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.NextAsync(null, cancellationToken);
+
+        
+        
         }
 
         private static bool IsAmbiguous(string timex)
