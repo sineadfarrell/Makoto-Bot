@@ -16,7 +16,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         
         
         public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
-            : base(nameof(ModuleDialog))
+            : base(nameof(LecturerDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
