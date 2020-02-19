@@ -17,14 +17,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public ModuleDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger, LecturerDialog lecturerDialog)
+        public ModuleDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
             : base(nameof(ModuleDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(lecturerDialog);
+            // AddDialog(lecturerDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -99,20 +99,20 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         
         }
         
-        private async Task<DialogTurnResult> LecturerStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
+        // private async Task<DialogTurnResult> LecturerStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
             
-            var moduleDetails = (ModuleDetails)stepContext.Options;
+        //     var moduleDetails = (ModuleDetails)stepContext.Options;
 
-            // moduleDetails.Lecturer = (string)stepContext.Result;
+        //     // moduleDetails.Lecturer = (string)stepContext.Result;
 
-            var messageText = $"Who is the lecturer for the {moduleDetails.ModuleName} module?";
-            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+        //     var messageText = $"Who is the lecturer for the {moduleDetails.ModuleName} module?";
+        //     var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
 
-            // return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-            return await stepContext.NextAsync(null, cancellationToken);
+        //     // return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+        //     return await stepContext.NextAsync(null, cancellationToken);
 
-        }
+        // }
 
         private async Task<DialogTurnResult> ExamStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
