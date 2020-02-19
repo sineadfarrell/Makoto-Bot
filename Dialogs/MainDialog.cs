@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, CampusDialog campusDialog, ExtracurricularDialog extracurricularDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
@@ -29,6 +29,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(userProfileDialog);
             AddDialog(moduleDialog);
+            AddDialog(endConversation);
+            AddDialog(campusDialog);
+            AddDialog(extracurricularDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -109,32 +112,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleInfoLec, cancellationToken);
 
 
-                case Luis.Conversation.Intent.discussFeeling:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getFeelingMessageText = "TODO: get Feeling flow here";
-                    var getFeelingMessage = MessageFactory.Text(getFeelingMessageText, getFeelingMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getFeelingMessage, cancellationToken);
-                    break;
+                // case Luis.Conversation.Intent.discussFeeling:
+                //     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                //     var getFeelingMessageText = "TODO: get Feeling flow here";
+                //     var getFeelingMessage = MessageFactory.Text(getFeelingMessageText, getFeelingMessageText, InputHints.IgnoringInput);
+                //     await stepContext.Context.SendActivityAsync(getFeelingMessage, cancellationToken);
+                //     break;
+
                 case Luis.Conversation.Intent.discussExtracurricular:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getCWMessageText = "TODO: get Extracurricular flow here";
-                    var getCWMessage = MessageFactory.Text(getCWMessageText, getCWMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getCWMessage, cancellationToken);
-                    break;
+                    return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken);
 
                 case Luis.Conversation.Intent.discussCampus:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getCampusMessageText = "TODO: get Campus flow here";
-                    var getCampusMessage = MessageFactory.Text(getCampusMessageText, getCampusMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getCampusMessage, cancellationToken);
-                    break;
+                    return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
 
                 case Luis.Conversation.Intent.endConversation:
-                    // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                    var getEndMessageText = "TODO: get End flow here";
-                    var getEndMessage = MessageFactory.Text(getEndMessageText, getEndMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getEndMessage, cancellationToken);
-                    break;
+
+                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);
 
                 case Luis.Conversation.Intent.None:
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
