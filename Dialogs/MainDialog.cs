@@ -98,8 +98,15 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), moduleInfo, cancellationToken);
 
                 case Luis.Conversation.Intent.endConversation:
+                        var moduleInfoEnd = new ModuleDetails()
+                    {
+                        ModuleName = luisResult.Entities.Module,
+                        Opinion = luisResult.Entities.Opinion,
+                        Lecturer = luisResult.Entities.Lecturer,
+                        Emotion = luisResult.Entities.Emotion,
 
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);
+                    };
+                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), moduleInfoEnd, cancellationToken);
 
                 case Luis.Conversation.Intent.None:
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
