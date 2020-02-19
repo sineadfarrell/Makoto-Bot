@@ -36,19 +36,22 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<ConversationRecognizer>();
 
             // Discuss a module.
+            services.AddSingleton<CampusDialog>();
+
+            services.AddSingleton<EndConversationDialog>();
+
+            services.AddSingleton<ExtracurricularDialog>();
+
             services.AddSingleton<ModuleDialog>();
 
             services.AddSingleton<UserProfileDialog>();
             
             services.AddSingleton<TopLevelDialog>();
 
-            services.AddSingleton<EndConversationDialog>();
-
-            services.AddSingleton<CampusDialog>();
-
-            services.AddSingleton<EndConversationDialog>();
-
             services.AddSingleton<LecturerDialog>();
+
+            
+
 
             // // The MainDialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
