@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer,  ExtracurricularDialog extracurricularDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, CampusDialog campusDialog, LecturerDialog lecturerDialog, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, CampusDialog campusDialog, LecturerDialog lecturerDialog, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
@@ -32,7 +32,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(endConversation);
             AddDialog(lecturerDialog);
             AddDialog(campusDialog);
-            AddDialog(extracurricularDialog);
+            // AddDialog(extracurricularDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -112,16 +112,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                     return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleInfoLec, cancellationToken);
 
-
-                // case Luis.Conversation.Intent.discussFeeling:
-                //     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                //     var getFeelingMessageText = "TODO: get Feeling flow here";
-                //     var getFeelingMessage = MessageFactory.Text(getFeelingMessageText, getFeelingMessageText, InputHints.IgnoringInput);
-                //     await stepContext.Context.SendActivityAsync(getFeelingMessage, cancellationToken);
-                //     break;
-
-                case Luis.Conversation.Intent.discussExtracurricular:
-                    return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken);
+                // case Luis.Conversation.Intent.discussExtracurricular:
+                //     return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken);
 
                 case Luis.Conversation.Intent.discussCampus:
                     return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
