@@ -15,18 +15,18 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger, CampusDialog campusDialog)
+        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
             : base(nameof(ExtracurricularDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(campusDialog);
+            // AddDialog(campusDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                GetInfoAsync,
+                // GetInfoAsync,
                 
             }));
 
@@ -51,25 +51,25 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
 
 
-        private async Task<DialogTurnResult> GetInfoAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-             if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+        // private async Task<DialogTurnResult> GetInfoAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //      if (!_luisRecognizer.IsConfigured)
+        //     {
+        //         await stepContext.Context.SendActivityAsync(
+        //             MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
+        //         return await stepContext.NextAsync(null, cancellationToken);
+        //     }
 
-          var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+        //   var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             
-            var moduleDetails = new ModuleDetails(){
-                Lecturer = luisResult.Entities.Lecturer,
-                Opinion = luisResult.Entities.Opinion,
-            };
+        //     var moduleDetails = new ModuleDetails(){
+        //         Lecturer = luisResult.Entities.Lecturer,
+        //         Opinion = luisResult.Entities.Opinion,
+        //     };
             
             
-            return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
-        }
+        //     return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
+        // }
     }
 }
