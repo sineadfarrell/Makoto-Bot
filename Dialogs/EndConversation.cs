@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger, MainDialog mainDialog)
+        public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger)
             : base(nameof(EndConversationDialog))
 
         {   
@@ -68,7 +68,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             var messageText = $"Great! Let's continue our conversation.";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken);
+            return await stepContext.EndDialogAsync(null, cancellationToken);
 
         }
 
