@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using Microsoft.Bot.Builder.Dialogs.Choices;
@@ -52,7 +53,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                     };
                 
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.GetValue(0).ToString()}, it's great to meet you! Let's talk about your modules"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you! Let's talk about your modules"), cancellationToken);
 
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
             }
