@@ -15,14 +15,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public CampusDialog(ConversationRecognizer luisRecognizer,  ILogger<CampusDialog> logger, MainDialog mainDialog)
+        public CampusDialog(ConversationRecognizer luisRecognizer,  ILogger<CampusDialog> logger)
             : base(nameof(CampusDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(mainDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -66,10 +65,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.EndDialogAsync(null, cancellationToken);
             }
             
-            var messageText = $"I've heard it very interesting, do you have a final exam?";
-            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken);
-
+            
+            return await stepContext.EndDialogAsync(null, cancellationToken);
         }
 
 
