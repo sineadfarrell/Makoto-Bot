@@ -42,6 +42,10 @@ namespace Microsoft.BotBuilderSamples
             
             services.AddSingleton<TopLevelDialog>();
 
+            services.AddSingleton<EndConversationDialog>();
+
+            services.AddSingleton<CampusDialog>();
+
             // // The MainDialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
 

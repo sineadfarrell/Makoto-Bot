@@ -31,6 +31,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(moduleDialog);
             AddDialog(endConversation);
             // AddDialog(campusDialog);
+            //AddDialog(extraDialog);
+            // AddDialog(lecturerDialog)
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
