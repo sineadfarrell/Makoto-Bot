@@ -99,20 +99,20 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         
         }
         
-        // private async Task<DialogTurnResult> LecturerStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
+        private async Task<DialogTurnResult> LecturerStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
             
-        //     var moduleDetails = (ModuleDetails)stepContext.Options;
+            var moduleDetails = (ModuleDetails)stepContext.Options;
 
-        //     // moduleDetails.Lecturer = (string)stepContext.Result;
+            // moduleDetails.Lecturer = (string)stepContext.Result;
 
-        //     var messageText = $"Who is the lecturer for the {moduleDetails.ModuleName} module?";
-        //     var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            var messageText = $"Who is the lecturer for the {moduleDetails.ModuleName} module?";
+            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
 
-        //     // return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-        //     return await stepContext.NextAsync(null, cancellationToken);
+            // return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
 
-        // }
+        }
 
         private async Task<DialogTurnResult> ExamStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
