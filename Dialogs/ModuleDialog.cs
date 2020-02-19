@@ -78,7 +78,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             //     await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
             // }
 
-            var messageText = $"Wow {moduleDetails.NumberOfModules}, What modules are you taking??";
+            var messageText = $"Wow {luisResult.Entities.NumberOfModules}, What modules are you taking??";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -93,6 +93,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.NextAsync(null, cancellationToken);
             }
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            
             var moduleDetails = new ModuleDetails(){
                 ModuleName = luisResult.Entities.Module,
             };
