@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
+        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ExtracurricularDialog> logger)
             : base(nameof(ExtracurricularDialog))
 
         {   

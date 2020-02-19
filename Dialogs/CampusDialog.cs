@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public CampusDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
+        public CampusDialog(ConversationRecognizer luisRecognizer,  ILogger<CampusDialog> logger)
             : base(nameof(CampusDialog))
 
         {   

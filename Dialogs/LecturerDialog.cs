@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
+        public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<LecturerDialog> logger)
             : base(nameof(LecturerDialog))
 
         {   

@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger, MainDialog mainDialog)
+        public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger, MainDialog mainDialog)
             : base(nameof(EndConversationDialog))
 
         {   
