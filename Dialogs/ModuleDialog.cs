@@ -71,9 +71,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             };
 
           //TODO : add exception if they say zero, 0, none etc
-
+            
             var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()}, what is your favourite module?";
-            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text($"Wow {moduleDetails.NumberOfModules.FirstOrDefault()}, what is your favourite module?", $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()}, what is your favourite module?", InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
 
