@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, CampusDialog campusDialog, ExtracurricularDialog extracurricularDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer,  ExtracurricularDialog extracurricularDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
@@ -30,7 +30,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(userProfileDialog);
             AddDialog(moduleDialog);
             AddDialog(endConversation);
-            AddDialog(campusDialog);
+            // AddDialog(campusDialog);
             AddDialog(extracurricularDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -122,8 +122,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 case Luis.Conversation.Intent.discussExtracurricular:
                     return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken);
 
-                case Luis.Conversation.Intent.discussCampus:
-                    return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
+                // case Luis.Conversation.Intent.discussCampus:
+                //     return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
 
                 case Luis.Conversation.Intent.endConversation:
 
