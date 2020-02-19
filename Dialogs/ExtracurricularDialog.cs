@@ -15,13 +15,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger)
+        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ModuleDialog> logger, CampusDialog campusDialog)
             : base(nameof(ExtracurricularDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(campusDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -44,7 +45,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = $"Do you do any extracurricular activities in university?";
+            var messageText = $"What do you do in your spare time in University?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -67,9 +68,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 Opinion = luisResult.Entities.Opinion,
             };
             
-            var messageText = $"I've heard it very interesting, do you have a final exam?";
-            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.NextAsync(null, cancellationToken);
+            
+            return await stepContext.BeginDialogAsync(nameof(CampusDialog), cancellationToken);
         }
     }
 }

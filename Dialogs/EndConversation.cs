@@ -26,9 +26,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 IntroStepAsync,
                 EndStepAsync,
-                
             }));
-
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
