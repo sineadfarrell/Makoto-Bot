@@ -15,14 +15,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger, MainDialog mainDialog)
+        public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger, ExtracurricularDialog extracurricularDialog)
             : base(nameof(EndConversationDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(mainDialog);
+            AddDialog(extracurricularDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -69,7 +69,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             var messageText = $"Great! Let's continue our conversation.";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.EndDialogAsync(cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), new UserProfile(), cancellationToken);
 
         }
 
