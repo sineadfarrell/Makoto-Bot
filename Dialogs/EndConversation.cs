@@ -69,7 +69,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             var messageText = $"Great! Let's continue our conversation.";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.BeginDialogAsync(nameof(MainDialog), new ModuleDetails(), cancellationToken);
+            return await stepContext.EndDialogAsync(cancellationToken);
 
         }
 
