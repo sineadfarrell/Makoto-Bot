@@ -42,8 +42,6 @@ namespace Luis
 
             public string[] Module;
 
-            public string[] Number;
-
             public string[] NumberOfModules;
 
             public string[] Opinion;
@@ -61,7 +59,6 @@ namespace Luis
                 public InstanceData[] Extracurricular;
                 public InstanceData[] Lecturer;
                 public InstanceData[] Module;
-                public InstanceData[] Number;
                 public InstanceData[] NumberOfModules;
                 public InstanceData[] Opinion;
                 public InstanceData[] Place;
