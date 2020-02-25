@@ -56,7 +56,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "What aspect of university would you like to talk about?";
+            var messageText = stepContext.Options?.ToString() ?? "What aspect of university would you like to talk about? (for example; your modules, extracurricular activities, your lecturer's etc.)";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
