@@ -61,7 +61,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
           var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            
+            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
+           }
             var moduleDetails = new ModuleDetails(){
                 Lecturer = luisResult.Entities.Lecturer,
                 Opinion = luisResult.Entities.Opinion,

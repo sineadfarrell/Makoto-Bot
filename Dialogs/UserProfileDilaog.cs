@@ -18,7 +18,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
 
-       public UserProfileDialog(ConversationRecognizer luisRecognizer,  ModuleDialog moduleDialog,  ILogger<UserProfileDialog> logger)
+       public UserProfileDialog(ConversationRecognizer luisRecognizer,  ModuleDialog moduleDialog,  ILogger<UserProfileDialog> logger, EndConversationDialog endConversationDialog)
             : base(nameof(UserProfileDialog))
         {
             // _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
@@ -27,6 +27,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(moduleDialog);
+            AddDialog(endConversationDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
 
@@ -52,6 +53,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Name = luisResult.Entities.UserName,
 
                     };
+                
+                if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
+           }
                 
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you! Let's talk about your modules"), cancellationToken);
 
