@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ExtracurricularDialog> logger, LecturerDialog lecturerDialog, CampusDialog campusDialog,  ModuleDialog moduleDialog, EndConversationDialog endConversationDialog)
+        public ExtracurricularDialog(ConversationRecognizer luisRecognizer,  ILogger<ExtracurricularDialog> logger, EndConversationDialog endConversationDialog)
             : base(nameof(ExtracurricularDialog))
 
         {   
@@ -23,9 +23,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(endConversationDialog);
-            AddDialog(moduleDialog);
-            AddDialog(lecturerDialog);
-            AddDialog(campusDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
