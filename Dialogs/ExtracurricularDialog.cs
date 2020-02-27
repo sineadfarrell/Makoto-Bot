@@ -59,7 +59,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var messageText = $"";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
-            if (string.IsNullOrEmpty(userDetails.Activity.First()))
+            if (string.IsNullOrEmpty(userDetails.Activity.FirstOrDefault()))
             {
                 messageText = $"Great! So what kinda things do you like doing on campus?";
                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
