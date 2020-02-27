@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
-using System; 
-using Linq;
 using Microsoft.Extensions.Logging;
-using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
+using System.Linq;
+using System;
+using System.Collections.Generic;
+using Microsoft.Bot.Builder.Dialogs.Choices;
+
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
