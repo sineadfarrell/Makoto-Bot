@@ -66,7 +66,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
             else
             {
-                messageText = $"That's very cool! Are you a part of a team or a club for {userDetails.Activity}?";
+                messageText = $"That's very cool! Are you a part of a team or a club for {userDetails.Activity.FirstOrDefault()}?";
                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             }
 
