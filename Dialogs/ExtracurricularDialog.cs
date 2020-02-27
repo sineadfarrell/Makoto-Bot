@@ -44,10 +44,26 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
-
-            // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = $"What do you do in your spare time on campus";
-            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+           
+           //if the user has said they do an activity talk about that rather than asking again
+           var userDetails = new UserProfile(){
+               Name = luisResult.Entities.UserName,
+               Activity = luisResult.Entities.Extracurricular, 
+           };
+           var messageText = $"";
+        var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+           
+           if(userDetails.Activity.Equals(null)){
+             messageText = $"Great! So what kinda things do you like doing on campus?";
+            elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+           }
+           else{
+            messageText = $"That's very cool! Are you a part of a team or a club for {userDetails.Activity}?";
+            elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+           }
+          
+            
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
 
