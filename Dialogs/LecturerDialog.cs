@@ -25,10 +25,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                GetInfoAsync,
-                
+                GetInfoAsync,  
             }));
-
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
@@ -43,9 +41,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.NextAsync(null, cancellationToken);
             }
             
-
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = $"What do you think about your lectures?";
+            var messageText = $"What are your lectures like?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -73,6 +70,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
+            
             var messageText = $"I've heard it very interesting, do you have a final exam?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.NextAsync(null, cancellationToken);

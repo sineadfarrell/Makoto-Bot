@@ -19,6 +19,8 @@ namespace Microsoft.BotBuilderSamples
 
         public string[] NumberOfModules {get; set;}
 
+        public bool talkAboutLecturers = false;
+
         }
     }
 
