@@ -59,14 +59,15 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var messageText = $"";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
-            if (string.IsNullOrEmpty(userDetails.Activity.FirstOrDefault()))
+            if (!string.IsNullOrEmpty(userDetails.Activity.FirstOrDefault()))
             {
-                messageText = $"Great! So what kinda things do you like doing on campus?";
+                messageText = $"Great idea! Are you a part of a team or a club for {userDetails.Activity.FirstOrDefault()}?";
                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+            
             }
             else
             {
-                messageText = $"That's very cool! Are you a part of a team or a club for {userDetails.Activity.FirstOrDefault()}?";
+                 messageText = $"Great! So what kinda things do you like doing on campus?";
                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             }
 
