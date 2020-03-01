@@ -103,6 +103,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
                 await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
             }
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+            }
 
             var messageText2 = $"Is there anything else you'd like to talk about?";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };

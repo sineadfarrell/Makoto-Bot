@@ -103,6 +103,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
            }
+            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+            }
            
             var messageText = $"I've heard it very interesting, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text( messageText, messageText, InputHints.ExpectingInput)};
@@ -201,7 +205,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), moduleDetails, cancellationToken);;    
            }
+            
             else{
+                 if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+            }
             var messageText = $"Would you spend much time on campus after your lectures and tutorials?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleDetails, cancellationToken);;   

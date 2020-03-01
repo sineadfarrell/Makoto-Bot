@@ -42,6 +42,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
+            
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
             var messageText = $"What do you think about your lectures?";
@@ -68,7 +69,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 Lecturer = luisResult.Entities.Lecturer,
                 Opinion = luisResult.Entities.Opinion,
             };
-            
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+            }
             var messageText = $"I've heard it very interesting, do you have a final exam?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.NextAsync(null, cancellationToken);
