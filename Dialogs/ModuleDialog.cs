@@ -124,13 +124,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             }
             else{
-                 var messageText = $"Oh I've heard it's a very interesting module, what do you like about that module?";
+                 var messageText = $"Oh I've heard it's a very interesting module, what do you like about it?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
             }
-            
-
-
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
