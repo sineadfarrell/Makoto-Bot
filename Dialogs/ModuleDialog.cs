@@ -36,7 +36,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 NumberModulesStepAsync,
                 NameOfModules,
                 FinalStepAsync,
-                NextDialogAsync,
+                // NextDialogAsync,
             }));
 
             // The initial child Dialog to run.
