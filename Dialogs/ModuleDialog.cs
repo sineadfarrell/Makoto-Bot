@@ -59,7 +59,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = $"Excellent lets's talk about modules. \n How many modules are you taking this trimester?";
+            var messageText = $"Excellent lets's talk about your modules. \n How many modules are you taking this trimester?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
