@@ -83,9 +83,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
                 
-                var promptMessage =  MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!");
+                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
 
-                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+                return await stepContext.NextAsync();
             }
 
         private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
