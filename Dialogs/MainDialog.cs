@@ -83,9 +83,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
                 
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
+                var promptMessage =  MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!");
 
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
+                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
             }
 
         private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -93,6 +93,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What would you like to talk about? For example we can talk about yourself, your modules, extracurricular activities, your lecturer's etc.")}, cancellationToken);
             }
+
         public async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
