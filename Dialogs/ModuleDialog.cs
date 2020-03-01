@@ -56,7 +56,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
            }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-           var messageText = $"Brilliant, lets's talk about modules. \n How many modules are you taking this trimester?";
+           var messageText = $"Excellent lets's talk about modules. \n How many modules are you taking this trimester?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -81,7 +81,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
           //TODO : add exception if they say zero, 0, none etc
             
-            var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules and which one is your favourite?";
+            var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules! Which one would you say is your favourite?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text( messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -100,12 +100,19 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var moduleDetails = new ModuleDetails(){
                 ModuleName = luisResult.Entities.Module,
             };
+            
             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
            }
             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+            }
+            if(!luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussModule)){
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
             }
            
             var messageText = $"Oh I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
