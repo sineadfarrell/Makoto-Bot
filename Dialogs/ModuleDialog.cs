@@ -117,7 +117,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
             }
-            if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
+            if(!string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
             var messageText = $"Oh I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
