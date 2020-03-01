@@ -81,7 +81,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
           //TODO : add exception if they say zero, 0, none etc
             
-            var messageText = $"That's great {moduleDetails.NumberOfModules.FirstOrDefault()} modules and what is your favourite module?";
+            var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules and which one is your favourite?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text( messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
@@ -108,7 +108,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
            
-            var messageText = $"I've heard it very interesting, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
+            var messageText = $"Oh I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text( messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
