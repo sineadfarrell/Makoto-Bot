@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, ExtracurricularDialog extracurricularDialog, LecturerDialog lecturerDialog, CampusDialog campusDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, ExtracurricularDialog extracurricularDialog, LecturerDialog lecturerDialog, CampusDialog campusDialog, FeelingDialog feelingDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
@@ -31,6 +31,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(moduleDialog);
             AddDialog(endConversation);
             AddDialog(campusDialog);
+            AddDialog(feelingDialog);
             AddDialog(extracurricularDialog);
             AddDialog(lecturerDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -56,7 +57,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "What aspect of university would you like to talk about? (for example; your modules, extracurricular activities, your lecturer's etc.)";
+            var messageText = stepContext.Options?.ToString() ?? "Brilliant! What would you like to talk about? For example we can talk about yourself, your modules, extracurricular activities, your lecturer's etc.";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
@@ -130,6 +131,16 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Emotion = luisResult.Entities.Emotion
                     };
                     return await stepContext.BeginDialogAsync(nameof(CampusDialog), moduleInfoCampus, cancellationToken);
+                
+                case Luis.Conversation.Intent.discussFeeling:
+                var moduleInfoFeel = new ModuleDetails()
+                    {
+                        ModuleName = luisResult.Entities.Module,
+                        Opinion = luisResult.Entities.Opinion,
+                        Lecturer = luisResult.Entities.Lecturer,
+                        Emotion = luisResult.Entities.Emotion
+                    };
+                    return await stepContext.BeginDialogAsync(nameof(FeelingDialog), moduleInfoFeel, cancellationToken);
 
                 case Luis.Conversation.Intent.discussExtracurricular:
 
