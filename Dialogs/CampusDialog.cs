@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public CampusDialog(ConversationRecognizer luisRecognizer,  ILogger<CampusDialog> logger, EndConversationDialog endConversation, ExtracurricularDialog extracurricularDialog)
+        public CampusDialog(ConversationRecognizer luisRecognizer, ILogger<CampusDialog> logger, EndConversationDialog endConversation, ExtracurricularDialog extracurricularDialog)
             : base(nameof(CampusDialog))
 
         {   
@@ -38,13 +38,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             if (!_luisRecognizer.IsConfigured)
             {
                 await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+                MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = $"What do you think of the ucd campus?";
+            var messageText = $"";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
         }
