@@ -83,8 +83,15 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
+            
 
             //TODO : add exception if they say zero, 0, none etc
+
+            if(string.IsNullOrEmpty(moduleDetails.NumberOfModules.FirstOrDefault())){
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+            }
 
             var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules! Which one would you say is your favourite?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
@@ -111,24 +118,26 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
+
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
             {
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
             }
+            
             if(string.IsNullOrEmpty(moduleDetails.ModuleName.FirstOrDefault())){
-              var messageText = $"Oh I've heard it's a very interesting module, what do you like about it?";
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+
+            }
+           
+            var messageText = $"Oh I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
-            }
-            else{
-                var messageText = $"Oh I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
-            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
-
-            }
+            
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
