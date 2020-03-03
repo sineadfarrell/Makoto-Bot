@@ -20,14 +20,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, ExtracurricularDialog extracurricularDialog, LecturerDialog lecturerDialog, CampusDialog campusDialog, FeelingDialog feelingDialog, UserProfileDialog userProfileDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, ExtracurricularDialog extracurricularDialog, LecturerDialog lecturerDialog, CampusDialog campusDialog, FeelingDialog feelingDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(userProfileDialog);
+            
             AddDialog(moduleDialog);
             AddDialog(endConversation);
             AddDialog(campusDialog);
@@ -36,9 +36,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(lecturerDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                IntroStepAsync,
-                GetNameAsync,
-                NameStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -48,52 +45,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
 
 
-        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-
-            // Use the text provided in FinalStepAsync or the default if it is the first time.
-            var messageText = stepContext.Options?.ToString() ?? "Brilliant! Let's start off with getting to know you, what is your name?";
-            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
-        }
-
-    
-         private async Task<DialogTurnResult> GetNameAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-
-        {
-            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            var userInfo = new UserProfile()
-                    {
-                        Name = luisResult.Entities.UserName,
-
-                    };
-                
-                if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
-           }
-            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-            }
-                
-                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
-
-                return await stepContext.NextAsync();
-            }
-
-        private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What would you like to talk about? For example we can talk about your modules, extracurricular activities, your lecturer's etc.")}, cancellationToken);
-            }
-
+       
         public async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -105,19 +57,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
-                // case Luis.Conversation.Intent.greeting:
-
-                //     // Initialize UsesrEntities with any entities we may have found in the response.
-                //     var userInfo = new UserProfile()
-                //     {
-                //         Name = luisResult.Entities.UserName,
-                //     };
-
-                //     if (userInfo.Name == null)
-                //     {
-                //         return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), userInfo, cancellationToken);
-                //     }
-                //     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), userInfo, cancellationToken);
 
                 case Luis.Conversation.Intent.discussModule:
 

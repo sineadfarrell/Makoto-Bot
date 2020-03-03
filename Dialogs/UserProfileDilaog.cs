@@ -18,7 +18,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
 
-       public UserProfileDialog(ConversationRecognizer luisRecognizer,  ModuleDialog moduleDialog,  ILogger<UserProfileDialog> logger, EndConversationDialog endConversationDialog)
+       public UserProfileDialog(ConversationRecognizer luisRecognizer,  MainDialog main,  ILogger<UserProfileDialog> logger, EndConversationDialog endConversationDialog)
             : base(nameof(UserProfileDialog))
         {
             // _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
@@ -26,25 +26,39 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Logger = logger;
             
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(moduleDialog);
-            AddDialog(endConversationDialog);
+          
+            AddDialog(main);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
 
+            IntroStepAsync,
+            GetNameAsync,
             NameStepAsync,
-            NumberOfModulesAsync,
+            MainDialogAsync,
 
             }));
 
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
-        private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+       private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Hello! Could you please tell me your name.") }, cancellationToken);
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
+
+            // Use the text provided in FinalStepAsync or the default if it is the first time.
+            var messageText = stepContext.Options?.ToString() ?? "Brilliant! Let's start off with getting to know you, what is your name?";
+            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
-         private async Task<DialogTurnResult> NumberOfModulesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+
+    
+         private async Task<DialogTurnResult> GetNameAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
 
         {
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
@@ -62,10 +76,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
                 
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
+                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
 
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog), new ModuleDetails(), cancellationToken);
+                return await stepContext.NextAsync();
             }
+
+        private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What would you like to talk about? For example we can talk about your modules, extracurricular activities, your lecturer's etc.")}, cancellationToken);
+            }
+
+              private static async Task<DialogTurnResult> MainDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+          return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken);   
+        }
+
 
            
         
