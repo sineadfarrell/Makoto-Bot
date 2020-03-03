@@ -73,7 +73,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
-
+              
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
             {
@@ -83,11 +83,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
-            
-
+    
             //TODO : add exception if they say zero, 0, none etc
 
-            if(string.IsNullOrEmpty(moduleDetails.NumberOfModules.FirstOrDefault())){
+            if(!luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussModule)){
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
