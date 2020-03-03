@@ -85,16 +85,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             };
     
             //TODO : add exception if they say zero, 0, none etc
-
-            if(!luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussModule)){
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-            }
-
+            switch (luisResult.TopIntent().intent)
+            {
+            case Luis.Conversation.Intent.greeting:
+           
             var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules! Which one would you say is your favourite?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
+
+            default:
+                    // Catch all for unhandled intents
+                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
+                    var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
+                    break;
+            }
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> NameOfModules(WaterfallStepContext stepContext, CancellationToken cancellationToken)
