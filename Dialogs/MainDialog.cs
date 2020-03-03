@@ -36,6 +36,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(lecturerDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
+                NameStepAsync,
                 ActStepAsync,
                 FinalStepAsync,
             }));
@@ -44,7 +45,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
+    private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
 
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What would you like to talk about? For example we can talk about your modules, extracurricular activities, your lecturer's etc.")}, cancellationToken);
+            }
        
         public async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {

@@ -33,8 +33,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             IntroStepAsync,
             GetNameAsync,
-            NameStepAsync,
-            MainDialogAsync,
+            
 
             }));
 
@@ -78,19 +77,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 
                  await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
 
-                return await stepContext.NextAsync();
+                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken);   
             }
 
-        private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What would you like to talk about? For example we can talk about your modules, extracurricular activities, your lecturer's etc.")}, cancellationToken);
-            }
-
-              private static async Task<DialogTurnResult> MainDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-          return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken);   
-        }
 
 
            
