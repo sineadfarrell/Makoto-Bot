@@ -26,7 +26,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Logger = logger;
             
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-          
+            AddDialog(endConversationDialog);
             AddDialog(main);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
