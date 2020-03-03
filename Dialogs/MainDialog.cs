@@ -129,13 +129,19 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
                     return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleInfoExtra, cancellationToken);
 
-
-                default:
-                    // Catch all for unhandled intents
+                case Luis.Conversation.Intent.None:
                     var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
-                    break;
+                   
+                    return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
+
+                // default:
+                //     // Catch all for unhandled intents
+                //     var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
+                //     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
+                //     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
+                //     break;
 
             }
             return await stepContext.NextAsync(null, cancellationToken);
