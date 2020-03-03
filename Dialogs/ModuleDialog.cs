@@ -93,13 +93,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
-            case Luis.Conversation.Intent.None:
+            default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
-                    var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
-                    return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
+                var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
+                 var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
+                 await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+            
+            return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
             }
-            return await stepContext.NextAsync(null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> NameOfModules(WaterfallStepContext stepContext, CancellationToken cancellationToken)
