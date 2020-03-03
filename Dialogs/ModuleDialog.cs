@@ -159,41 +159,39 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 ModuleName = luisResult.Entities.Module,
             };
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussLecturer))
+             switch (luisResult.TopIntent().intent)
             {
+            case Luis.Conversation.Intent.discussLecturer:
                 var didntUnderstandMessageText = $"That's great! Why don't we talk about the rest of your lecturers.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
                 return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleDetails, cancellationToken);
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussExtracurricular))
-            {   var didntUnderstandMessageText = $"That's great! Do you do anything in your spare time?";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+            
+            case Luis.Conversation.Intent.discussExtracurricular:
+              var didntUnderstandMessageText2 = $"That's great! Do you do anything in your spare time?";
+                var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
                 return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleDetails, cancellationToken); ;
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussCampus))
-            {   var didntUnderstandMessageText = $"That's great! Do you do like UCD's campus?";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+            
+            case Luis.Conversation.Intent.discussCampus:
+               var didntUnderstandMessageText3 = $"That's great! Do you do like UCD's campus?";
+                var didntUnderstandMessage3 = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage3, cancellationToken);
                 return await stepContext.BeginDialogAsync(nameof(CampusDialog), moduleDetails, cancellationToken); ;
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
-            {
+            
+            case Luis.Conversation.Intent.endConversation:
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), moduleDetails, cancellationToken); ;
+            
+            default:
+                var didntUnderstandMessageText4 = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage4 = MessageFactory.Text(didntUnderstandMessageText4, didntUnderstandMessageText4, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage4, cancellationToken);
+
+            
+            
+            return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog));
+;
             }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
-            {
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-            }
-
-
-            var messageText = $"That's great! Is there a final exam for {moduleDetails.ModuleName}?";
-            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.NextAsync(null, cancellationToken);
-
         }
 
         private async Task<DialogTurnResult> NextDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
