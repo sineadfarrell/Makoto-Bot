@@ -105,19 +105,19 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             switch (luisResult.TopIntent().intent)
             {
-                case Luis.Conversation.Intent.greeting:
+                // case Luis.Conversation.Intent.greeting:
 
-                    // Initialize UsesrEntities with any entities we may have found in the response.
-                    var userInfo = new UserProfile()
-                    {
-                        Name = luisResult.Entities.UserName,
-                    };
+                //     // Initialize UsesrEntities with any entities we may have found in the response.
+                //     var userInfo = new UserProfile()
+                //     {
+                //         Name = luisResult.Entities.UserName,
+                //     };
 
-                    if (userInfo.Name == null)
-                    {
-                        return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), userInfo, cancellationToken);
-                    }
-                    return await stepContext.BeginDialogAsync(nameof(ModuleDialog), userInfo, cancellationToken);
+                //     if (userInfo.Name == null)
+                //     {
+                //         return await stepContext.BeginDialogAsync(nameof(UserProfileDialog), userInfo, cancellationToken);
+                //     }
+                //     return await stepContext.BeginDialogAsync(nameof(ModuleDialog), userInfo, cancellationToken);
 
                 case Luis.Conversation.Intent.discussModule:
 
