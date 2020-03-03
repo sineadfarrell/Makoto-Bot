@@ -87,18 +87,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             //TODO : add exception if they say zero, 0, none etc
             switch (luisResult.TopIntent().intent)
             {
-            case Luis.Conversation.Intent.greeting:
+            case Luis.Conversation.Intent.discussModule:
            
             var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules! Which one would you say is your favourite?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
-            default:
+            case Luis.Conversation.Intent.None:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
-                    break;
+                    return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
             }
             return await stepContext.NextAsync(null, cancellationToken);
         }

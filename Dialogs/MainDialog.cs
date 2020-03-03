@@ -130,7 +130,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleInfoExtra, cancellationToken);
 
                 case Luis.Conversation.Intent.None:
-                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
+                    var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Why don't we try again!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
                    
