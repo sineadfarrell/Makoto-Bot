@@ -15,13 +15,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<LecturerDialog> logger)
+        public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<LecturerDialog> logger, EndConversationDialog endConversationDialog)
             : base(nameof(LecturerDialog))
 
         {   
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(endConversationDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
