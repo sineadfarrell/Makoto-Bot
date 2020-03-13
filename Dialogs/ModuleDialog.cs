@@ -137,9 +137,18 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
 
             }
-           
-            var messageText = $"Oh I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
+            var messageText = " ";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+
+            if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
+             messageText = $"Oh no! I don't think I know that module. What do you like about?";
+             elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+            }
+            else{
+             messageText = $"Ah very good! I've heard it's a very interesting module, what do you like about {moduleDetails.ModuleName.FirstOrDefault()}?";
+             elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+            }
+
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
             
@@ -162,7 +171,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
              switch (luisResult.TopIntent().intent)
             {
             case Luis.Conversation.Intent.discussLecturer:
-                var didntUnderstandMessageText = $"That's great! Why don't we talk about the rest of your lecturers.";
+                var didntUnderstandMessageText = $"That's great! Why don't we talk about your lecturers.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
                 return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleDetails, cancellationToken);
