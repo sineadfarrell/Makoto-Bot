@@ -71,12 +71,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
            }
             
             var messageText = $"I've heard it very interesting, do you have a final exam?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.BeginDialogAsync(nameof(FeelingDialog), cancellationToken);;    
+            return await stepContext.BeginDialogAsync(nameof(FeelingDialog));;    
         }
     }
 }
