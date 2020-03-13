@@ -68,7 +68,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             };
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                    var didntUnderstandMessage = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.ExpectingInput)};
+                    await stepContext.PromptAsync(nameof(TextPrompt), didntUnderstandMessage, cancellationToken);
+                    return await stepContext.ReplaceDialogAsync(nameof(LecturerDialog));
+
             }
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
