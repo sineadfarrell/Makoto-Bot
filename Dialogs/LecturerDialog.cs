@@ -60,9 +60,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
 
           var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
-           }
+           
             var moduleDetails = new ModuleDetails(){
                 Lecturer = luisResult.Entities.Lecturer,
                 Opinion = luisResult.Entities.Opinion,
@@ -71,6 +69,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
+           }
             
             var messageText = $"I've heard it very interesting, do you have a final exam?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
