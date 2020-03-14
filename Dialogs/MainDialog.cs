@@ -130,7 +130,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleInfoExtra, cancellationToken);
 
                 case Luis.Conversation.Intent.None:
-                    var didntUnderstandMessageText2 = $"Sorry, it is not in my capacity to talk about that. Why don't you try rephrase!";
+                    var didntUnderstandMessageText2 = $"Sorry, it is not in my capacity to talk about that. Let's try again!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
                    
@@ -138,7 +138,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText3 = $"Sorry, it is not in my capacity to talk about that.Why don't you try rephrase!";
+                    var didntUnderstandMessageText3 = $"Sorry, it is not in my capacity to talk about that. Let's try again!";
                     var didntUnderstandMessage3 = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage3, cancellationToken);
                     return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
