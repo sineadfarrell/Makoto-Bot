@@ -320,7 +320,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
 
-            var messageText = $"Oh no that's awful! Let's talk about your lecturers";
+            var messageText = $"Oh no that's awful! Why don't we talk about your lecturers.";
             var Message = MessageFactory.Text(messageText,messageText, InputHints.IgnoringInput);
             await stepContext.Context.SendActivityAsync(Message, cancellationToken);
             return await stepContext.BeginDialogAsync(nameof(LecturerDialog));

@@ -47,7 +47,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
     private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What would you like to talk about? For example we can talk about your modules, extracurricular activities, your lecturer's etc.")}, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("So what would you like to talk about? For example we can talk about extracurricular activities, UCD campus or effect of the CoronaVirus on your experience.")}, cancellationToken);
             }
        
         public async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
