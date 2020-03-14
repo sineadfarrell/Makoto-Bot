@@ -18,13 +18,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
 
-        public object ExamorCa { get => ExamorCa; set => ExamorCa = value; }
+         public bool ExamorCa = false;
 
         public ModuleDialog(ConversationRecognizer luisRecognizer, ILogger<ModuleDialog> logger, LecturerDialog lecturerDialog, ExtracurricularDialog extracurricularDialog, EndConversationDialog endConversationDialog,  CampusDialog campusDialog)
             : base(nameof(ModuleDialog))
 
         {
-             ExamorCa = false;
+             
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
