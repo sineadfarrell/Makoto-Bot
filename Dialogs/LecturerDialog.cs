@@ -81,9 +81,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             var messageText = $"That's interesting to know!";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+             await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
             var message = $"Would you like to talk about another aspect of university?.";
-            var messageFac = MessageFactory.Text(message, message, InputHints.IgnoringInput);
-            await stepContext.Context.SendActivityAsync(messageFac, cancellationToken);
+            var messageFac = new PromptOptions { Prompt = MessageFactory.Text(message, message, InputHints.ExpectingInput)};
+            await stepContext.PromptAsync(nameof(TextPrompt), messageFac, cancellationToken);
             return await stepContext.NextAsync();;    
         }
 
