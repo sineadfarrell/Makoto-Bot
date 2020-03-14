@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ConversationRecognizer luisRecognizer, ExtracurricularDialog extracurricularDialog, LecturerDialog lecturerDialog, CampusDialog campusDialog, FeelingDialog feelingDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
+        public MainDialog(ConversationRecognizer luisRecognizer, ExtracurricularDialog extracurricularDialog, LecturerDialog lecturerDialog, CampusDialog campusDialog, ModuleDialog moduleDialog, EndConversationDialog endConversation, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _luisRecognizer = luisRecognizer;
@@ -31,7 +31,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(moduleDialog);
             AddDialog(endConversation);
             AddDialog(campusDialog);
-            AddDialog(feelingDialog);
             AddDialog(extracurricularDialog);
             AddDialog(lecturerDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -108,16 +107,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
                     return await stepContext.BeginDialogAsync(nameof(CampusDialog), moduleInfoCampus, cancellationToken);
                 
-                case Luis.Conversation.Intent.discussFeeling:
-                var moduleInfoFeel = new ModuleDetails()
-                    {
-                        ModuleName = luisResult.Entities.Module,
-                        Opinion = luisResult.Entities.Opinion,
-                        Lecturer = luisResult.Entities.Lecturer,
-                        Emotion = luisResult.Entities.Emotion
-                    };
-                    return await stepContext.BeginDialogAsync(nameof(FeelingDialog), moduleInfoFeel, cancellationToken);
-
                 case Luis.Conversation.Intent.discussExtracurricular:
 
                     var moduleInfoExtra = new ModuleDetails()

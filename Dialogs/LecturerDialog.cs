@@ -15,7 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
         
         
-        public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<LecturerDialog> logger, EndConversationDialog endConversationDialog, FeelingDialog feelingDialog)
+        public LecturerDialog(ConversationRecognizer luisRecognizer,  ILogger<LecturerDialog> logger, EndConversationDialog endConversationDialog, ExtracurricularDialog extracurricularDialog )
             : base(nameof(LecturerDialog))
 
         {   
@@ -23,7 +23,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(endConversationDialog);
-            AddDialog(feelingDialog);
+            AddDialog(extracurricularDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -79,7 +79,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             var messageText = $"I've heard it very interesting, do you have a final exam?";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.BeginDialogAsync(nameof(FeelingDialog));;    
+            return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog));;    
         }
     }
 }
