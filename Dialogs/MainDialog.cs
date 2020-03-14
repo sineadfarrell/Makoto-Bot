@@ -141,11 +141,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText3 = $"Sorry, it is not in my capacity to talk about that.Why don't you try rephrase!";
                     var didntUnderstandMessage3 = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage3, cancellationToken);
-                     await stepContext.ReplaceDialogAsync(nameof(MainDialog));
-                    break;
+                    return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
+                   
 
             }
-            return await stepContext.NextAsync(null, cancellationToken);
+           
 
         }
 
