@@ -43,7 +43,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 LeastFavModuleAsync, 
                 ExamorCaLeastAsync,
                 OpinionLeastAsync,
-                FinalStepAsync,
+                // FinalStepAsync,
                 // NextDialogAsync,
             }));
 
@@ -320,9 +320,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
 
-            var messageText2 = $"Oh no that's awful! Let's talk about your lecturers";
-            var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
-            await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+            var messageText = $"Oh no that's awful! Let's talk about your lecturers";
+            var Message = MessageFactory.Text(messageText,messageText, InputHints.IgnoringInput);
+            await stepContext.Context.SendActivityAsync(Message, cancellationToken);
             return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken);
         }
 
