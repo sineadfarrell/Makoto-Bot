@@ -67,10 +67,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
             
 
-            if(!luisResult.TopIntent().Equals(Luis.Conversation.Intent.greeting)){
+            if(string.IsNullOrWhiteSpace(userInfo.Name.FirstOrDefault())){
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
 
-                return await stepContext.BeginDialogAsync(nameof(MainDialog));     }
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));     }
 
             if((userInfo.Name.FirstOrDefault()).Equals("")){
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
