@@ -19,19 +19,20 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
 
-        public ExtracurricularDialog(ConversationRecognizer luisRecognizer, ILogger<ExtracurricularDialog> logger, EndConversationDialog endConversationDialog)
+        public ExtracurricularDialog(ConversationRecognizer luisRecognizer, ILogger<ExtracurricularDialog> logger, CampusDialog campusDialog)
             : base(nameof(ExtracurricularDialog))
 
         {
             _luisRecognizer = luisRecognizer;
             Logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(endConversationDialog);
+            AddDialog(campusDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
                 GetInfoAsync,
                 MoveConvoAsync,
+                CampusAsync,
 
             }));
 
@@ -126,10 +127,22 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             if (luisResult.Text.Equals("no"))
             {
-                return await stepContext.BeginDialogAsync(nameof(EndOfConversationCodes), cancellationToken);
+                await stepContext.Context.SendActivityAsync(
+                    MessageFactory.Text("It was great talking to you! Enjoy the rest of your day!", inputHint: InputHints.IgnoringInput), cancellationToken);
+
+                return await stepContext.EndDialogAsync(null, cancellationToken);
             }
-            return await stepContext.EndDialogAsync();
+            return await stepContext.NextAsync();
 
         }
+
+    private async Task<DialogTurnResult> CampusAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            
+            return await stepContext.BeginDialogAsync(nameof(CampusDialog));
+
+        }
+
+
     }
 }
