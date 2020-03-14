@@ -213,7 +213,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
           
            
-            var messageText2 = $"Ok! Why don't you like?";
+            var messageText2 = $"Ok! Why don't you like it?";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
         }
@@ -286,11 +286,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
             if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
-             messageText = $"Oh no! I don't think I know that module. Is there much continous assesment for the module or is there an exam?";
+             messageText = $"Oh no! I don't think I know that module. Is there much continuous assesment for the module or is there an exam?";
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             }
             else{
-             messageText = $"Oh it's a pity you don't like {moduleDetails.ModuleName.FirstOrDefault()}.  Is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
+             messageText = $"Oh it's a pity you don't like {moduleDetails.ModuleName.FirstOrDefault()}.  Is there much continuous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             }
 
