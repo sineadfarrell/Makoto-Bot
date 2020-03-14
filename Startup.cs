@@ -50,6 +50,8 @@ namespace Microsoft.BotBuilderSamples
 
             services.AddSingleton<LecturerDialog>();
 
+            services.AddSingleton<CoronaDialog>();
+
             
             
 
