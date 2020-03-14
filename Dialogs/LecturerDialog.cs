@@ -84,8 +84,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
              await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
             var message = $"Would you like to talk about another aspect of university?.";
             var messageFac = new PromptOptions { Prompt = MessageFactory.Text(message, message, InputHints.ExpectingInput)};
-            await stepContext.PromptAsync(nameof(TextPrompt), messageFac, cancellationToken);
-            return await stepContext.NextAsync();;    
+            
+            return await stepContext.PromptAsync(nameof(TextPrompt), messageFac, cancellationToken);
         }
 
          private async Task<DialogTurnResult> GetAnswerAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
