@@ -11,7 +11,7 @@ using Microsoft.Bot.Builder.Azure;
 public class EchoBot : ActivityHandler
 {
    // Create local Memory Storage.
-   private static readonly MemoryStorage _myStorage = new MemoryStorage();
+   private static readonly AzureBlobStorage _myStorage = new AzureBlobStorage("makotopilot", "pilot");
 
    // Create cancellation token (used by Async Write operation).
    public CancellationToken cancellationToken { get; private set; }
