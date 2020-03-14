@@ -185,7 +185,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
           
               
-            var messageText = $"Ok! Why do you like {moduleDetails.ModuleName.FirstOrDefault()}?";
+            var messageText = $"Ok! Why do you like the module?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
           
@@ -213,7 +213,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
           
            
-            var messageText2 = $"Ok! Why don't you like {moduleDetails.ModuleName.FirstOrDefault()}?";
+            var messageText2 = $"Ok! Why don't you like?";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
         }
