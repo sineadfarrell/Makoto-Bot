@@ -97,7 +97,7 @@ namespace Microsoft.BotBuilderSamples.Bots
          logItems.TurnNumber++;
 
          // Show user new user message.
-         await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
+        //  await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
 
          // Create Dictionary object to hold received user messages.
          var changes = new Dictionary<string, object>();
@@ -124,7 +124,7 @@ namespace Microsoft.BotBuilderSamples.Bots
          logItems.TurnNumber++;
          
          // show user new list of saved messages.
-         await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
+        //  await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
 
         // Create Dictionary object to hold new list of messages.
         var changes = new Dictionary<string, object>();
