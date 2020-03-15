@@ -24,7 +24,7 @@ namespace Microsoft.BotBuilderSamples.Bots
     public class DialogBot<T> : ActivityHandler
         where T : Dialog
     {
-        private static readonly AzureBlobStorage _myStorage = new AzureBlobStorage("DefaultEndpointsProtocol=https;AccountName=makotopilot;AccountKey=sz9BpcayrqYeS5T/opq8UBn6pb/l2B6ypjUuunDwGFDY/Pr2wbGhBFffbkjkrXd60vceNaI3906lSZEq5Lezdg==;EndpointSuffix=core.windows.net", "makotoPilotTable");
+        private static readonly AzureBlobStorage _myStorage = new AzureBlobStorage("DefaultEndpointsProtocol=https;AccountName=makotopilot;AccountKey=sz9BpcayrqYeS5T/opq8UBn6pb/l2B6ypjUuunDwGFDY/Pr2wbGhBFffbkjkrXd60vceNaI3906lSZEq5Lezdg==;EndpointSuffix=core.windows.net", "makoto-pilot");
 
         // Create cancellation token (used by Async Write operation).
         public CancellationToken cancellationToken { get; private set; }
