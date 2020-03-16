@@ -109,7 +109,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
             }
 
-            var messageText2 = $"Is there anything else you'd like to talk about?";
+            var messageText2 = $"Is there anything else you'd like to talk about in relation to university?";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
         }

@@ -57,7 +57,7 @@ namespace Microsoft.BotBuilderSamples.Bots
 
             await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
             await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
-            await turnContext.SendActivityAsync("When you are ready to begin the conversation type anything.");
+            await turnContext.SendActivityAsync("When you are ready to begin our conversation type anything.");
         }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))

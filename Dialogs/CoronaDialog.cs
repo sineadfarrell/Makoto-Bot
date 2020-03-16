@@ -57,7 +57,23 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
-            var messageText = $"On that note I think we have come to the end of our conversation.";
+            var messageText = $"What kind of activities are you doing at home now?";
+
+            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
+            return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
+
+        }
+
+private async Task<DialogTurnResult> ResponseStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+              if (!_luisRecognizer.IsConfigured)
+            {
+                await stepContext.Context.SendActivityAsync(
+                MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+
+                return await stepContext.NextAsync(null, cancellationToken);
+            }
+            var messageText = $"That's awesome! Well that's all we have time to talk about! ";
           
             await stepContext.Context.SendActivityAsync( MessageFactory.Text(messageText, inputHint: InputHints.IgnoringInput), cancellationToken);
             return await stepContext.NextAsync();

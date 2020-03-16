@@ -40,9 +40,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 FavModuleAsync,
                 ExamorCaFavAsync,
                 OpinionFavAsync,
-                LeastFavModuleAsync, 
-                ExamorCaLeastAsync,
-                OpinionLeastAsync,
+                // LeastFavModuleAsync, 
+                // ExamorCaLeastAsync,
+                // OpinionLeastAsync,
                 // FinalStepAsync,
                 // NextDialogAsync,
             }));
@@ -153,7 +153,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             }
             else{
-             messageText = $"Ah very good! I've heard it's a very interesting module, Is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
+             messageText = $"Ah very good! I've heard it's a very interesting module, is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             }
 
@@ -242,7 +242,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken); ;
             }
 
-            var messageText2 = $"That's great! What would you say is your least favourite module?";
+            var messageText2 = $"That's great! Why don't we talk about your lecturers for a bit.";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
