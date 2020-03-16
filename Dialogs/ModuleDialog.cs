@@ -40,11 +40,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 FavModuleAsync,
                 ExamorCaFavAsync,
                 OpinionFavAsync,
-                // LeastFavModuleAsync, 
-                // ExamorCaLeastAsync,
-                // OpinionLeastAsync,
-                // FinalStepAsync,
-                // NextDialogAsync,
             }));
 
             // The initial child Dialog to run.
@@ -64,6 +59,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
             {
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+            }
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog.IntroStepAsync)); 
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
@@ -107,7 +108,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             
-            return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog.BeginDialogAsync));
+            return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog.NumberModulesStepAsync));
             }
         }
 

@@ -5,9 +5,6 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using System;
-using System.Collections.Generic;
-using Microsoft.Bot.Builder.Dialogs.Choices;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 
@@ -49,7 +46,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
+             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+            return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
+                }
 
+            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.IntroStepAsync)); 
+            }
             // Use the text provided in FinalStepAsync or the default if it is the first time.
             var messageText = stepContext.Options?.ToString() ?? "Brilliant! Let's start off with getting to know you, what is your name?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
@@ -77,8 +84,15 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                      await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = didntUnderstandMessage }, cancellationToken);
-                    return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog));
+                    return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.GetNameAsync));
             }
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.GetNameAsync)); 
+            }
+            
             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
             return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
                 }
