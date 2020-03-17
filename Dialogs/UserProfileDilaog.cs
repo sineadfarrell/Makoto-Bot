@@ -82,7 +82,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
-            if (luisResult.Entities.Equals(userInfo.Name))
+            if ((userInfo.Name.GetLength(0)).Equals(0))
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
 
