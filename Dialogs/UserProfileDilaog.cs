@@ -75,11 +75,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     };
             
 
-            if(string.IsNullOrEmpty(userInfo.Name.FirstOrDefault())){
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
-
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));    
-                 }
+           
 
     
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
@@ -89,6 +85,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.GetNameAsync)); 
             }
             
+             if(string.IsNullOrEmpty(userInfo.Name.FirstOrDefault())){
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
+
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));    
+                 }
             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
             return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
                 }
