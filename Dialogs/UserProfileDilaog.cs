@@ -53,13 +53,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
 
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
-            {
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                await stepContext.RepromptDialogAsync(cancellationToken);
-            }
+           
             // Use the text provided in FinalStepAsync or the default if it is the first time.
             var messageText = stepContext.Options?.ToString() ?? "Brilliant! Let's start off with getting to know you, what is your name?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
@@ -81,8 +75,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                //fix
-                return await stepContext.NextAsync();
+                await stepContext.RepromptDialogAsync(cancellationToken);
             }
 
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
