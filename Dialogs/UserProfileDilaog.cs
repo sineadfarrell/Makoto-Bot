@@ -11,34 +11,34 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 {
     public class UserProfileDialog : ComponentDialog
     {
-       
+
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
 
-       public UserProfileDialog(ConversationRecognizer luisRecognizer, ILogger<UserProfileDialog> logger, EndConversationDialog endConversationDialog, ModuleDialog moduleDialog)
-            : base(nameof(UserProfileDialog))
+        public UserProfileDialog(ConversationRecognizer luisRecognizer, ILogger<UserProfileDialog> logger, EndConversationDialog endConversationDialog, ModuleDialog moduleDialog)
+             : base(nameof(UserProfileDialog))
         {
             // _userProfileAccessor = userState.CreateProperty<UserProfile>("UserProfile");
             _luisRecognizer = luisRecognizer;
             Logger = logger;
-            
+
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(endConversationDialog);
             AddDialog(moduleDialog);
-            
+
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
 
             IntroStepAsync,
             GetNameAsync,
-            
+
 
             }));
 
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
-       private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
             {
@@ -47,16 +47,18 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
-             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
-            return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
-                }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+            }
 
-            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
+            {
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.IntroStepAsync)); 
+                return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.IntroStepAsync));
             }
             // Use the text provided in FinalStepAsync or the default if it is the first time.
             var messageText = stepContext.Options?.ToString() ?? "Brilliant! Let's start off with getting to know you, what is your name?";
@@ -64,46 +66,49 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
 
-    
-         private async Task<DialogTurnResult> GetNameAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+
+        private async Task<DialogTurnResult> GetNameAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
 
         {
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             var userInfo = new UserProfile()
-                    {
-                        Name = luisResult.Entities.UserName,
-                    };
-            
+            {
+                Name = luisResult.Entities.UserName,
+            };
 
-           
 
-    
-             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
+
+
+
+            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
+            {
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.GetNameAsync)); 
+                return await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog.GetNameAsync));
             }
-            
-             if(string.IsNullOrEmpty(userInfo.Name.FirstOrDefault())){
+
+            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+            }
+            if (string.IsNullOrWhiteSpace(userInfo.Name.FirstOrDefault()))
+            {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
 
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));    
-                 }
-            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
-            return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);;    
-                }
-                
-                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
-
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));   
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
             }
 
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
+
+            return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
+        }
 
 
-           
-        
+
+
+
     }
 
-       
+
 }
