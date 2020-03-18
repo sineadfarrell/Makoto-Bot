@@ -151,14 +151,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var messageText = " ";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
-            if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
-             messageText = $"Oh no! I don't think I know that module. Is there much continous assesment for the module or is there an exam?";
-             elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            }
-            else{
+            // if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
+            //  messageText = $"Oh no! I don't think I know that module. Is there much continous assesment for the module or is there an exam?";
+            //  elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+            // }
+            // else{
              messageText = $"Ah very good! I've heard it's a very interesting module, is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            }
+            // }
 
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
