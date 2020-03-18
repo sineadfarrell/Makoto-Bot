@@ -107,10 +107,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             default:
                     // Catch all for unhandled intents
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Why don't we try again. (# modules)";
-                 var elsePromptMessage2 =  MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput);
-                 await stepContext.Context.SendActivityAsync(elsePromptMessage2, cancellationToken);
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
-                 return await stepContext.ContinueDialogAsync();
+                 var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+
                            }
         }
 
@@ -142,7 +143,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Why don't we try again. (fav)";
                  var elsePromptMessage2 =  MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput);
                  await stepContext.Context.SendActivityAsync(elsePromptMessage2, cancellationToken);
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
                  return await stepContext.ContinueDialogAsync();
                            
             default:
