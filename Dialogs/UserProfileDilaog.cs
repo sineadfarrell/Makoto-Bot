@@ -82,7 +82,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
 
-            if (((userInfo.Name.FirstOrDefault()).Length < 0))
+            if (((userInfo.Name.FirstOrDefault()).Length < 0) || !userInfo.Name.FirstOrDefault().Equals(null))
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
 
