@@ -142,12 +142,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
             }
             
-            if(string.IsNullOrEmpty(moduleDetails.ModuleName.FirstOrDefault())){
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+            // if(string.IsNullOrEmpty(moduleDetails.ModuleName.FirstOrDefault())){
+            //     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+            //     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+            //     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
 
-            }
+            // }
             var messageText = " ";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
