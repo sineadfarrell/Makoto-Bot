@@ -47,7 +47,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if(prompt == true){
-                return await stepContext.ContinueDialogAsync(cancellationToken);
+                return await stepContext.NextAsync(null, cancellationToken);
             }
             if (!_luisRecognizer.IsConfigured)
             {
