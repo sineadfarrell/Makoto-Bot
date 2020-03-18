@@ -68,24 +68,26 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var userInfo = new UserProfile();
             userInfo.Name = luisResult.Entities.UserName;
            
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
-            {
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                await stepContext.RepromptDialogAsync(cancellationToken);
-            }
-
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
-            {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
             if ((userInfo.Name.Equals("")))
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
 
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
             }
+
+            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
+            {
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                await stepContext.ReplaceDialogAsync(nameof(UserProfileDialog));
+            }
+
+            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+            }
+           
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
 
