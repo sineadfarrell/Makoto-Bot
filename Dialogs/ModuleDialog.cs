@@ -31,7 +31,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             AddDialog(lecturerDialog);
             AddDialog(extracurricularDialog);
             AddDialog(endConversationDialog);
-           
             AddDialog(campusDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -64,7 +63,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog.IntroStepAsync)); 
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog.IntroStepAsync)); 
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
