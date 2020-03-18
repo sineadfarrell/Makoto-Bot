@@ -46,8 +46,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if(prompt == false){
-                return await stepContext.NextAsync();
+            if(prompt == true){
+                return await stepContext.ContinueDialogAsync(cancellationToken);
             }
             if (!_luisRecognizer.IsConfigured)
             {
@@ -94,7 +94,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
-    
+            prompt = true;
             //TODO : add exception if they say zero, 0, none etc
 
             if(luisResult.Text.Equals("0") || luisResult.Text.Equals("none") || luisResult.Text.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("0") ||luisResult.Entities.NumberOfModules.Equals("none") ){
