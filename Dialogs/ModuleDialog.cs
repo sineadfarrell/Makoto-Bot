@@ -108,8 +108,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     // Catch all for unhandled intents
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message! (# modules)";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
-                 await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  -2; 
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
                            }
         }
@@ -147,7 +147,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             default:
             var messageText = " ";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-
+            
             
              messageText = $"Ah very good! I've heard it's a very interesting module, is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
