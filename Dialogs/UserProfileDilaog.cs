@@ -69,13 +69,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Name = luisResult.Entities.UserName,
             };
 
-            if (((userInfo.Name).Equals("")))
-            {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
-
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
-            }
-
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
             {
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
@@ -87,6 +80,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
             {
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+            }
+
+            if (((userInfo.Name).Equals("")))
+            {
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
+
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
             }
            
 
