@@ -97,12 +97,12 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             prompt = true;
             //TODO : add exception if they say zero, 0, none etc
 
-            if(luisResult.Text.Equals("0") || luisResult.Text.Equals("none") || luisResult.Text.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("0") ||luisResult.Entities.NumberOfModules.Equals("none") ){
-                var messageText = $"Oh you are taking no modules this trimester! Why don't we talk about something else.";
-            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-             await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
-             return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken); 
-            }
+            // if(luisResult.Text.Equals("0") || luisResult.Text.Equals("none") || luisResult.Text.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("0") ||luisResult.Entities.NumberOfModules.Equals("none") ){
+            //     var messageText = $"Oh you are taking no modules this trimester! Why don't we talk about something else.";
+            // var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            //  await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
+            //  return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken); 
+            // }
 
             switch (luisResult.TopIntent().intent)
             {
