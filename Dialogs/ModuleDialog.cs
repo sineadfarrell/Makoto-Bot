@@ -109,7 +109,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
                  return await stepContext.ContinueDialogAsync();
                            }
         }
@@ -261,7 +261,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken);
             case Luis.Conversation.Intent.None:
             
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
                 stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
@@ -275,85 +275,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
         }
 
-        private async Task<DialogTurnResult> LeastFavModuleAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-             if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-
-            var moduleDetails = new ModuleDetails()
-            {
-                ModuleName = luisResult.Entities.Module,
-            };
-
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
-            {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
-
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
-            {
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-            }
-            
-            if(string.IsNullOrEmpty(moduleDetails.ModuleName.FirstOrDefault())){
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-
-            }
-            var messageText = " ";
-            var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-
-            if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
-             messageText = $"Oh no! I don't think I know that module. Is there much continuous assesment for the module or is there an exam?";
-             elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            }
-            else{
-             messageText = $"Oh it's a pity you don't like {moduleDetails.ModuleName.FirstOrDefault()}.  Is there much continuous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
-             elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            }
-
-            return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
-
-
-        }
-
-        private async Task<DialogTurnResult> OpinionLeastAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-
-            var moduleDetails = new ModuleDetails()
-            {
-                ModuleName = luisResult.Entities.Module,
-            };
-
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
-            {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
-
-            var messageText = $"Oh no that's awful! Why don't we talk about your lecturers.";
-            var Message = MessageFactory.Text(messageText,messageText, InputHints.IgnoringInput);
-            await stepContext.Context.SendActivityAsync(Message, cancellationToken);
-            return await stepContext.BeginDialogAsync(nameof(LecturerDialog));
-        }
-
-
+        
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
