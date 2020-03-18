@@ -108,9 +108,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     // Catch all for unhandled intents
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message! (# modules)";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
-                 
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
-                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+                 return await stepContext.ContinueDialogAsync();
                            }
         }
 
