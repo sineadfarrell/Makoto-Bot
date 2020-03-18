@@ -64,7 +64,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog.IntroStepAsync)); 
+                return await stepContext.BeginDialogAsync(nameof(ModuleDialog)); 
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
@@ -94,14 +94,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
             
-            //TODO : add exception if they say zero, 0, none etc
-
-            // if(luisResult.Text.Equals("0") || luisResult.Text.Equals("none") || luisResult.Text.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("0") ||luisResult.Entities.NumberOfModules.Equals("none") ){
-            //     var messageText = $"Oh you are taking no modules this trimester! Why don't we talk about something else.";
-            // var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            //  await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
-            //  return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken); 
-            // }
 
             switch (luisResult.TopIntent().intent)
             {
@@ -113,11 +105,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             default:
                     // Catch all for unhandled intents
-                    
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-               return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog));
+               return await stepContext.ReplaceDialogAsync(nameof(NumberModulesStepAsync));
                            }
         }
 
