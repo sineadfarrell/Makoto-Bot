@@ -106,8 +106,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             default:
                     // Catch all for unhandled intents
-                var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message! (# modules)";
-                 var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
+                var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Why don't we try again. (# modules)";
+                 var elsePromptMessage2 =  MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput);
+                 await stepContext.Context.SendActivityAsync(elsePromptMessage2, cancellationToken);
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
                  return await stepContext.ContinueDialogAsync();
                            }
@@ -137,12 +138,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             case Luis.Conversation.Intent.None:
             
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message. (fav)";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
-                 return await stepContext.NextAsync();
-            
+                    // Catch all for unhandled intents
+                var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Why don't we try again. (fav)";
+                 var elsePromptMessage2 =  MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput);
+                 await stepContext.Context.SendActivityAsync(elsePromptMessage2, cancellationToken);
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 return await stepContext.ContinueDialogAsync();
+                           
             default:
             var messageText = " ";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
