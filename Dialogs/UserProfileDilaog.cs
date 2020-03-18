@@ -82,15 +82,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
 
-            if (((userInfo.Name.FirstOrDefault()).Length < 0) || !userInfo.Name.FirstOrDefault().Equals(null))
-            {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
-
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
-            }
+        
            
 
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
+           await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);
 
             return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
         }
