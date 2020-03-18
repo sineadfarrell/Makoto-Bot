@@ -110,7 +110,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
-                 return await stepContext.NextAsync();
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
                            }
         }
 
