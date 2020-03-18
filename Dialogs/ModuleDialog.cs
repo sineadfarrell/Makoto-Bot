@@ -109,7 +109,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State[key: "stepIndex"] -2; 
                  return await stepContext.ContinueDialogAsync();
                            }
         }
@@ -138,10 +138,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             case Luis.Conversation.Intent.None:
             
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State[key: "stepIndex"] -2; 
                  return await stepContext.ContinueDialogAsync();
             
             default:
@@ -182,10 +182,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             case Luis.Conversation.Intent.None:
             
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State[key: "stepIndex"] -2; 
                  return await stepContext.ContinueDialogAsync();
             
             default:
@@ -222,10 +222,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             case Luis.Conversation.Intent.None:
             
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State[key: "stepIndex"] -2; 
                  return await stepContext.ContinueDialogAsync();
             
             default:
@@ -264,7 +264,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State[key: "stepIndex"] -2; 
                  return await stepContext.ContinueDialogAsync();
             
             default:
