@@ -109,8 +109,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message! (# modules)";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
-                 return await stepContext.ContinueDialogAsync();
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 return await stepContext.NextAsync();
                            }
         }
 
@@ -141,8 +141,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message. (fav)";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
-                 return await stepContext.ContinueDialogAsync();
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 return await stepContext.NextAsync();
             
             default:
             var messageText = " ";
@@ -185,8 +185,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message. (exam or ca)";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
-                 return await stepContext.ContinueDialogAsync();
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 return await stepContext.NextAsync();
             
             default:
 
@@ -225,8 +225,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
-                 return await stepContext.ContinueDialogAsync();
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  -1; 
+                 return await stepContext.NextAsync();
             
             default:
            
