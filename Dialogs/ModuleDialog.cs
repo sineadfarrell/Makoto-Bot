@@ -17,7 +17,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
         
-
+        public bool prompt = false;
     
 
         public ModuleDialog(ConversationRecognizer luisRecognizer, ILogger<ModuleDialog> logger, LecturerDialog lecturerDialog, ExtracurricularDialog extracurricularDialog, EndConversationDialog endConversationDialog,  CampusDialog campusDialog)
@@ -46,6 +46,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            if(prompt == false){
+                return await stepContext.NextAsync();
+            }
             if (!_luisRecognizer.IsConfigured)
             {
                 await stepContext.Context.SendActivityAsync(
@@ -217,8 +220,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
             }
-
-          
            
             var messageText2 = $"Ok! Why don't you like it?";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
