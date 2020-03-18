@@ -23,7 +23,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             Logger = logger;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(UserProfileDialog);
+        
             AddDialog(endConversationDialog);
             AddDialog(moduleDialog);
 
