@@ -77,6 +77,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
         private async Task<DialogTurnResult> NumberModulesStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            prompt = false;
             if (!_luisRecognizer.IsConfigured)
             {
                 await stepContext.Context.SendActivityAsync(
@@ -94,7 +95,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             {
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
-            prompt = true;
+            
             //TODO : add exception if they say zero, 0, none etc
 
             // if(luisResult.Text.Equals("0") || luisResult.Text.Equals("none") || luisResult.Text.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("0") ||luisResult.Entities.NumberOfModules.Equals("none") ){
@@ -114,6 +115,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             default:
                     // Catch all for unhandled intents
+                    prompt = true;
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
