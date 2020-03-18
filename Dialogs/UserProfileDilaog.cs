@@ -65,10 +65,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
         {
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            var userInfo = new UserProfile();
-            userInfo.Name = luisResult.Entities.UserName;
-           
-            if ((userInfo.Name.Equals("")))
+            var userInfo = new UserProfile(){
+            Name = luisResult.Entities.UserName,
+            };
+
+            if (((userInfo.Name).Equals("")))
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks, it's great to meet you!"), cancellationToken);
 
