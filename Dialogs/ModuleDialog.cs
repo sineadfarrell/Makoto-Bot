@@ -85,7 +85,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
             {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); 
             }
             var moduleDetails = new ModuleDetails()
             {
@@ -93,6 +93,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             };
     
             //TODO : add exception if they say zero, 0, none etc
+
+            if(luisResult.Text.Equals("0") || luisResult.Text.Equals("none") || luisResult.Text.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("zero") || luisResult.Entities.NumberOfModules.Equals("0") ||luisResult.Entities.NumberOfModules.Equals("none") ){
+                var messageText = $"Oh you are taking no modules this trimester! Why don't we talk about something else.";
+            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+             await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
+             return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), cancellationToken); 
+            }
+
             switch (luisResult.TopIntent().intent)
             {
             case Luis.Conversation.Intent.discussModule:
@@ -106,8 +114,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't get that. Please try rephrasing your message!";
                  var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
                  await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-               return await stepContext.BeginDialogAsync(nameof(ModuleDialog.NumberModulesStepAsync));
-            }
+               return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog));
+                           }
         }
 
         private async Task<DialogTurnResult> FavModuleAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
