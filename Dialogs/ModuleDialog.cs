@@ -130,38 +130,31 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
 
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            switch (luisResult.TopIntent().intent)
             {
+                case Luis.Conversation.Intent.endConversation:
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
+          
 
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
-            {
+            case Luis.Conversation.Intent.None:
+            
                 var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
                 var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
                 await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-            }
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                 return await stepContext.ContinueDialogAsync();
             
-            // if(string.IsNullOrEmpty(moduleDetails.ModuleName.FirstOrDefault())){
-            //     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-            //     var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-            //     await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-
-            // }
+            default:
             var messageText = " ";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
-            // if(string.IsNullOrWhiteSpace(moduleDetails.ModuleName.FirstOrDefault())){
-            //  messageText = $"Oh no! I don't think I know that module. Is there much continous assesment for the module or is there an exam?";
-            //  elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            // }
-            // else{
+            
              messageText = $"Ah very good! I've heard it's a very interesting module, is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
              elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-            // }
+         
 
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
-
+            }
             
         }
 
@@ -181,17 +174,28 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
 
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            switch (luisResult.TopIntent().intent)
             {
+                case Luis.Conversation.Intent.endConversation:
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
+          
+
+            case Luis.Conversation.Intent.None:
+            
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                 return await stepContext.ContinueDialogAsync();
+            
+            default:
 
           
               
             var messageText = $"Ok! Why do you like the module?";
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
-          
+            }
         }
          private async Task<DialogTurnResult> ExamorCaLeastAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -209,14 +213,27 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
 
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            
+            switch (luisResult.TopIntent().intent)
             {
+                case Luis.Conversation.Intent.endConversation:
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
+          
+
+            case Luis.Conversation.Intent.None:
+            
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                 return await stepContext.ContinueDialogAsync();
+            
+            default:
            
             var messageText2 = $"Ok! Why don't you like it?";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+            }
         }
         private async Task<DialogTurnResult> OpinionFavAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -235,18 +252,27 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 ModuleName = luisResult.Entities.Module,
             };
 
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
+            switch (luisResult.TopIntent().intent)
             {
+                case Luis.Conversation.Intent.endConversation:
                 return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
-            }
-            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussLecturer)){
-                return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken); ;
-            }
+          
+            case Luis.Conversation.Intent.discussLecturer:
+            return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken);
+            case Luis.Conversation.Intent.None:
+            
+                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
+                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
+                stepContext.ActiveDialog.State[key: "stepIndex"] =  - 2; 
+                 return await stepContext.ContinueDialogAsync();
+            
+            default:
 
             var messageText2 = $"That's great! Why don't we talk about your lecturers for a bit.";
             var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
             return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-
+            }
         }
 
         private async Task<DialogTurnResult> LeastFavModuleAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
