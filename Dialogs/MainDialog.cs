@@ -89,11 +89,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText3 = $"Sorry, it is not in my capacity to talk about that. Let's try again!";
-                    var didntUnderstandMessage3 = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage3, cancellationToken);
-                    return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
-                   
+                var didntUnderstandMessageTextNone = $"Sorry, I didn't understand that. Could you please rephrase)";
+                 var elsePromptMessageNone =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageTextNone, didntUnderstandMessageTextNone, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessageNone, cancellationToken);
 
             }
            
