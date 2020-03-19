@@ -63,10 +63,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
             {
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
+                    var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
+
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = -1;
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.

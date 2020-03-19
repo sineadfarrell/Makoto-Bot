@@ -72,7 +72,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
             {
-                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
