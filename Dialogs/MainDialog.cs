@@ -67,7 +67,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Lecturer = luisResult.Entities.Lecturer,
                         Emotion = luisResult.Entities.Emotion
                     };
-                    return await stepContext.BeginDialogAsync(nameof(CampusDialog), moduleInfoCampus, cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(CampusDialog));
                 
                 case Luis.Conversation.Intent.discussExtracurricular:
 

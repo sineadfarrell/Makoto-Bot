@@ -59,7 +59,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
             {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog)) ;
             }
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
             {
@@ -90,7 +90,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
             {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));
             }
             var moduleDetails = new ModuleDetails()
             {
@@ -136,7 +136,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Luis.Conversation.Intent.endConversation:
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog) );
 
 
                 case Luis.Conversation.Intent.discussModule:
@@ -184,7 +184,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Luis.Conversation.Intent.endConversation:
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog)); 
 
 
                 case Luis.Conversation.Intent.discussModule:
@@ -223,7 +223,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Luis.Conversation.Intent.endConversation:
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); 
+                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog)); 
 
 
                 case Luis.Conversation.Intent.None:

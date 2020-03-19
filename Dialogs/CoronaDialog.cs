@@ -41,6 +41,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
+           }
 
             // Use the text provided in FinalStepAsync or the default if it is the first time.
             var messageText = $"How do you feel about the closure of UCD because of the virus?";
@@ -57,6 +61,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
+           }
             var messageText = $"What kind of activities are you doing at home now?";
 
             var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
@@ -73,6 +81,10 @@ private async Task<DialogTurnResult> ResponseStepAsync(WaterfallStepContext step
 
                 return await stepContext.NextAsync(null, cancellationToken);
             }
+            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
+             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
+           }
             var messageText = $"That's awesome! Well that's all we have time to talk about! ";
           
             await stepContext.Context.SendActivityAsync( MessageFactory.Text(messageText, inputHint: InputHints.IgnoringInput), cancellationToken);
