@@ -64,8 +64,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             
             
             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                 var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
             var messageText = $"Do you use the facilities that are available often?";
             var promptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
@@ -84,8 +87,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                   var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                 var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
             var messageText = $"How has the corona virus affected this?";
             var promptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};
@@ -105,8 +111,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                 var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  2; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
             var messageText = $"That's very interesting! Would you like to talk more about the effect of the Corona Virus on your university experience?";
             var promptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput)};

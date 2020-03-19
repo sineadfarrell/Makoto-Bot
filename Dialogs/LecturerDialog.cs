@@ -69,10 +69,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 Opinion = luisResult.Entities.Opinion,
             };
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.ExpectingInput)};
-                    await stepContext.PromptAsync(nameof(TextPrompt), didntUnderstandMessage, cancellationToken);
-                    return await stepContext.ReplaceDialogAsync(nameof(LecturerDialog));
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                 var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
             }
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
@@ -106,10 +107,11 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 Opinion = luisResult.Entities.Opinion,
             };
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.ExpectingInput)};
-                    await stepContext.PromptAsync(nameof(TextPrompt), didntUnderstandMessage, cancellationToken);
-                    return await stepContext.ReplaceDialogAsync(nameof(LecturerDialog));
+                   var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                 var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
+                 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
+                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
             }
 
