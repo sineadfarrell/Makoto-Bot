@@ -271,7 +271,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var elsePromptMessage =  MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) ;
 
                     await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
-                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken); 
+                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog)); 
                 // Catch all for unhandled intents
 
                 default:
