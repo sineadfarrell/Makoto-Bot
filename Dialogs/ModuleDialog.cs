@@ -222,7 +222,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             switch (luisResult.TopIntent().intent)
             {
                 case Luis.Conversation.Intent.endConversation:
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
+                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); 
 
 
                 case Luis.Conversation.Intent.None:
@@ -264,10 +264,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 case Luis.Conversation.Intent.discussLecturer:
                     return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken);
+
                 case Luis.Conversation.Intent.discussModule:
                     var messageText2 = $"That's great! Why don't we talk about your lecturers for a bit.";
-                    var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
-                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
+                    var elsePromptMessage =  MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) ;
+
+                    await stepContext.Context.SendActivityAsync(elsePromptMessage, cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken); 
                 // Catch all for unhandled intents
 
                 default:
