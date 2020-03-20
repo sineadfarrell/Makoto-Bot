@@ -63,14 +63,7 @@ namespace Microsoft.BotBuilderSamples.Bots
             // Create concurrency control where this is used.
             public string ETag { get; set; } = "*";
         }
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-           
-            await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
-            await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
-            await turnContext.SendActivityAsync( "When you are ready to begin our conversation type anything");
-            
-        }
+       
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
