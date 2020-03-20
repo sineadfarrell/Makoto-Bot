@@ -29,7 +29,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-
+            firstSteoAsync,
             IntroStepAsync,
             GetNameAsync,
 
@@ -38,6 +38,13 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
+        }
+        private async Task<DialogTurnResult> firstSteoAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken){
+            await stepContext.Context.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
+            await stepContext.Context.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
+             var messageText = stepContext.Options?.ToString() ?? "When you are ready to begin our conversation type anything";
+            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {

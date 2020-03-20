@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Net.Http;
+
+
 
 
 
@@ -21,6 +24,8 @@ namespace Microsoft.BotBuilderSamples.Bots
     // each with dependency on distinct IBot types, this way ASP Dependency Injection can glue everything together without ambiguity.
     // The ConversationState is used by the Dialog system. The UserState isn't, however, it might have been used in a Dialog implementation,
     // and the requirement is that all BotState objects are saved at the end of a turn.
+
+    
     public class DialogBot<T> : ActivityHandler
         where T : Dialog
     {
@@ -32,13 +37,19 @@ namespace Microsoft.BotBuilderSamples.Bots
         protected readonly BotState ConversationState;
         protected readonly BotState UserState;
         protected readonly ILogger Logger;
+        private readonly ConversationRecognizer _luisRecognizer;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public DialogBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger)
+        public DialogBot(IHttpClientFactory httpClientFactory, ConversationRecognizer luisRecognizer, ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger)
         {
+             _luisRecognizer = luisRecognizer;
+              _httpClientFactory = httpClientFactory;
             ConversationState = conversationState;
             UserState = userState;
             Dialog = dialog;
             Logger = logger;
+            
+
         }
         // Class for storing a log of utterances (text of messages) as a list.
         public class UtteranceLog : IStoreItem
@@ -52,13 +63,23 @@ namespace Microsoft.BotBuilderSamples.Bots
             // Create concurrency control where this is used.
             public string ETag { get; set; } = "*";
         }
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
+        // protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        // {
 
-            await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
-            await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
-            await turnContext.SendActivityAsync("When you are ready to begin our conversation type anything.");
-        }
+        //      if (!_luisRecognizer.IsConfigured)
+        //     {
+        //         await turnContext.SendActivityAsync(
+        //         MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+
+        //     }
+
+        //     var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(turnContext, cancellationToken);
+
+
+        //     await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
+        //     await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
+        //     await turnContext.SendActivityAsync("When you are ready to begin our conversation type anything.");
+        // }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
