@@ -63,23 +63,23 @@ namespace Microsoft.BotBuilderSamples.Bots
             // Create concurrency control where this is used.
             public string ETag { get; set; } = "*";
         }
-        // protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        // {
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
 
-        //      if (!_luisRecognizer.IsConfigured)
-        //     {
-        //         await turnContext.SendActivityAsync(
-        //         MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+             if (!_luisRecognizer.IsConfigured)
+            {
+                await turnContext.SendActivityAsync(
+                MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-        //     }
+            }
 
-        //     var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(turnContext, cancellationToken);
+            // var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(turnContext, cancellationToken);
 
 
-        //     await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
-        //     await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
-        //     await turnContext.SendActivityAsync("When you are ready to begin our conversation type anything.");
-        // }
+            // await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
+            // await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
+            // await turnContext.SendActivityAsync("When you are ready to begin our conversation type anything.");
+        }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
