@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using System.Net.Http;
+
 
 
 
@@ -38,12 +38,12 @@ namespace Microsoft.BotBuilderSamples.Bots
         protected readonly BotState UserState;
         protected readonly ILogger Logger;
         private readonly ConversationRecognizer _luisRecognizer;
-        private readonly IHttpClientFactory _httpClientFactory;
+       
 
-        public DialogBot(IHttpClientFactory httpClientFactory, ConversationRecognizer luisRecognizer, ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger)
+        public DialogBot( ConversationRecognizer luisRecognizer, ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger)
         {
              _luisRecognizer = luisRecognizer;
-              _httpClientFactory = httpClientFactory;
+            
             ConversationState = conversationState;
             UserState = userState;
             Dialog = dialog;
