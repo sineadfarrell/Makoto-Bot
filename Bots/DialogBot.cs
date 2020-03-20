@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Text;
 
 
 
@@ -39,6 +40,7 @@ namespace Microsoft.BotBuilderSamples.Bots
         protected readonly ILogger Logger;
         private readonly ConversationRecognizer _luisRecognizer;
        
+       
 
         public DialogBot( ConversationRecognizer luisRecognizer, ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger)
         {
@@ -63,7 +65,17 @@ namespace Microsoft.BotBuilderSamples.Bots
             // Create concurrency control where this is used.
             public string ETag { get; set; } = "*";
         }
-       
+
+        public string utteranceLogName;
+        public int user =0;
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+             user++;
+
+            utteranceLogName = "$utteranceLog" + user.ToString(); 
+            await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+            await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
+        }
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
@@ -79,11 +91,11 @@ namespace Microsoft.BotBuilderSamples.Bots
             var utterance = turnContext.Activity.Text;
             // make empty local logitems list.
             UtteranceLog logItems = null;
-
+            
             // see if there are previous messages saved in storage.
             try
             {
-                string[] utteranceList = { "UtteranceLog" };
+                string[] utteranceList = { utteranceLogName };
                 logItems = _myStorage.ReadAsync<UtteranceLog>(utteranceList).Result?.FirstOrDefault().Value;
             }
             catch
@@ -106,7 +118,7 @@ namespace Microsoft.BotBuilderSamples.Bots
          // Create Dictionary object to hold received user messages.
          var changes = new Dictionary<string, object>();
          {
-            changes.Add("UtteranceLog", logItems);
+            changes.Add(utteranceLogName, logItems);
          }
          try
          {
@@ -133,7 +145,7 @@ namespace Microsoft.BotBuilderSamples.Bots
         // Create Dictionary object to hold new list of messages.
         var changes = new Dictionary<string, object>();
          {
-            changes.Add("UtteranceLog", logItems);
+            changes.Add(utteranceLogName, logItems);
          };
          
          try
