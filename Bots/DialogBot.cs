@@ -31,7 +31,7 @@ namespace Microsoft.BotBuilderSamples.Bots
         where T : Dialog
     {
         private static readonly AzureBlobStorage _myStorage = new AzureBlobStorage("DefaultEndpointsProtocol=https;AccountName=makotopilot;AccountKey=sz9BpcayrqYeS5T/opq8UBn6pb/l2B6ypjUuunDwGFDY/Pr2wbGhBFffbkjkrXd60vceNaI3906lSZEq5Lezdg==;EndpointSuffix=core.windows.net", "makoto-pilot");
-
+        private readonly AzureBlobTranscriptStore _myTranscripts = new AzureBlobTranscriptStore("DefaultEndpointsProtocol=https;AccountName=makotopilot;AccountKey=sz9BpcayrqYeS5T/opq8UBn6pb/l2B6ypjUuunDwGFDY/Pr2wbGhBFffbkjkrXd60vceNaI3906lSZEq5Lezdg==;EndpointSuffix=core.windows.net", "makoto-pilot");
         // Create cancellation token (used by Async Write operation).
         public CancellationToken cancellationToken { get; private set; }
         protected readonly Dialog Dialog;
@@ -67,12 +67,13 @@ namespace Microsoft.BotBuilderSamples.Bots
         }
 
         public string utteranceLogName;
-        public int user =0;
+        public int user = 0;
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
              user++;
 
             utteranceLogName = "$utteranceLog" + user.ToString(); 
+            
             await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
             await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
@@ -87,79 +88,96 @@ namespace Microsoft.BotBuilderSamples.Bots
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            // preserve user input.
-            var utterance = turnContext.Activity.Text;
-            // make empty local logitems list.
-            UtteranceLog logItems = null;
             
-            // see if there are previous messages saved in storage.
-            try
-            {
-                string[] utteranceList = { utteranceLogName };
-                logItems = _myStorage.ReadAsync<UtteranceLog>(utteranceList).Result?.FirstOrDefault().Value;
-            }
-            catch
-            {
-                // Inform the user an error occured.
-                await turnContext.SendActivityAsync("Sorry, something went wrong reading your stored messages!");
-            }
-         // If no stored messages were found, create and store a new entry.
-      if (logItems is null)
-      {
-         // add the current utterance to a new object.
-         logItems = new UtteranceLog();
-         logItems.UtteranceList.Add(utterance);
-         // set initial turn counter to 1.
-         logItems.TurnNumber++;
+//             // preserve user input.
+//             var utterance = turnContext.Activity.Text;
+//             // make empty local logitems list.
+//             UtteranceLog logItems = null;
+            
+//             // see if there are previous messages saved in storage.
+//             try
+//             {
+//                 string[] utteranceList = {utteranceLogName};
+//                 logItems = _myStorage.ReadAsync<UtteranceLog>(utteranceList).Result?.FirstOrDefault().Value;
+//             }
+//             catch
+//             {
+//                 // Inform the user an error occured.
+//                 await turnContext.SendActivityAsync("Sorry, something went wrong reading your stored messages!");
+//             }
+//          // If no stored messages were found, create and store a new entry.
+//       if (logItems is null)
+//       {
+//          // add the current utterance to a new object.
+//          logItems = new UtteranceLog();
+//          logItems.UtteranceList.Add(utterance);
+//          // set initial turn counter to 1.
+//          logItems.TurnNumber++;
 
-         // Show user new user message.
-        //  await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
+//          // Show user new user message.
+//         //  await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
 
-         // Create Dictionary object to hold received user messages.
-         var changes = new Dictionary<string, object>();
-         {
-            changes.Add(utteranceLogName, logItems);
-         }
-         try
-         {
-            // Save the user message to your Storage.
-            await _myStorage.WriteAsync(changes, cancellationToken);
-         }
-         catch
-         {
-            // Inform the user an error occured.
-            await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
-         }
-      }
-      // Else, our Storage already contained saved user messages, add new one to the list.
-      else
-      {
-         // add new message to list of messages to display.
-         logItems.UtteranceList.Add(utterance);
-         // increment turn counter.
-         logItems.TurnNumber++;
+//          // Create Dictionary object to hold received user messages.
+//          var changes = new Dictionary<string, object>();
+//          {
+//             changes.Add(utteranceLogName, logItems);
+//          }
+//          try
+//          {
+//             // Save the user message to your Storage.
+//             await _myStorage.WriteAsync(changes, cancellationToken);
+//          }
+//          catch
+//          {
+//             // Inform the user an error occured.
+//             await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
+//          }
+//       }
+//       // Else, our Storage already contained saved user messages, add new one to the list.
+//       else
+//       {
+//          // add new message to list of messages to display.
+//          logItems.UtteranceList.Add(utterance);
+//          // increment turn counter.
+//          logItems.TurnNumber++;
          
-         // show user new list of saved messages.
-        //  await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
+//          // show user new list of saved messages.
+//         //  await turnContext.SendActivityAsync($"{logItems.TurnNumber}: The list is now: {string.Join(", ", logItems.UtteranceList)}");
 
-        // Create Dictionary object to hold new list of messages.
-        var changes = new Dictionary<string, object>();
-         {
-            changes.Add(utteranceLogName, logItems);
-         };
+//         // Create Dictionary object to hold new list of messages.
+//         var changes = new Dictionary<string, object>();
+//          {
+//             changes.Add(utteranceLogName, logItems);
+//          };
          
-         try
-         {
-            // Save new list to your Storage.
-            await _myStorage.WriteAsync(changes, cancellationToken);
-}
-         catch
-         {
-            // Inform the user an error occured.
-            await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
-         }
-      }
+//          try
+//          {
+//             // Save new list to your Storage.
+//             await _myStorage.WriteAsync(changes, cancellationToken);
+// }
+//          catch
+//          {
+//             // Inform the user an error occured.
+//             await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
+//          }
+//       }
+    await _myTranscripts.LogActivityAsync(turnContext.Activity);
 
+    List<string> storedTranscripts = new List<string>();
+    PagedResult<Microsoft.Bot.Builder.TranscriptInfo> pagedResult = null;
+    var pageSize = 0;
+    do
+    {
+       pagedResult = await _myTranscripts.ListTranscriptsAsync("emulator", pagedResult?.ContinuationToken);
+       pageSize = pagedResult.Items.Count();
+
+       // transcript item contains ChannelId, Created, Id.
+       // save the channelIds found by "ListTranscriptsAsync" to a local list.
+       foreach (var item in pagedResult.Items)
+       {
+          storedTranscripts.Add(item.Id);
+       }
+    } while (pagedResult.ContinuationToken != null);
     
             Logger.LogInformation("Running dialog with Message Activity.");
 
