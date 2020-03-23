@@ -144,7 +144,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
 
-                    messageText = $"Ah very good! I've heard it's a very interesting module, is there much continous assesment for {moduleDetails.ModuleName.FirstOrDefault()} or is there an exam?";
+                    messageText = $"Ah very good! I've heard it's a very interesting module, is a final exam for {moduleDetails.ModuleName.FirstOrDefault()}?";
                     elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
 
