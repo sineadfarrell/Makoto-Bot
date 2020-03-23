@@ -13,11 +13,6 @@ using System.Linq;
 using System.Text;
 
 
-
-
-
-
-
 namespace Microsoft.BotBuilderSamples.Bots
 {
     // This IBot implementation can run any type of Dialog. The use of type parameterization is to allows multiple different bots
@@ -25,8 +20,7 @@ namespace Microsoft.BotBuilderSamples.Bots
     // each with dependency on distinct IBot types, this way ASP Dependency Injection can glue everything together without ambiguity.
     // The ConversationState is used by the Dialog system. The UserState isn't, however, it might have been used in a Dialog implementation,
     // and the requirement is that all BotState objects are saved at the end of a turn.
-
-    
+ 
     public class DialogBot<T> : ActivityHandler
         where T : Dialog
     {
@@ -67,15 +61,12 @@ namespace Microsoft.BotBuilderSamples.Bots
         }
 
         public string utteranceLogName;
-        public int user = 0;
+       
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-             user++;
-
-            utteranceLogName = "$utteranceLog" + user.ToString(); 
-            
-            await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-            await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
+            await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
+            await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
+             await turnContext.SendActivityAsync( "When you are ready to begin our conversation type anything");
         }
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -103,7 +94,7 @@ namespace Microsoft.BotBuilderSamples.Bots
             catch
             {
                 // Inform the user an error occured.
-                await turnContext.SendActivityAsync("Sorry, something went wrong reading your stored messages!");
+                // await turnContext.SendActivityAsync("Sorry, something went wrong reading your stored messages!");
             }
          // If no stored messages were found, create and store a new entry.
       if (logItems is null)
@@ -130,7 +121,7 @@ namespace Microsoft.BotBuilderSamples.Bots
          catch
          {
             // Inform the user an error occured.
-            await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
+            // await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
          }
       }
       // Else, our Storage already contained saved user messages, add new one to the list.
@@ -158,7 +149,7 @@ namespace Microsoft.BotBuilderSamples.Bots
          catch
          {
             // Inform the user an error occured.
-            await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
+            // await turnContext.SendActivityAsync("Sorry, something went wrong storing your message!");
          }
       }
     await _myTranscripts.LogActivityAsync(turnContext.Activity);

@@ -29,7 +29,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-            firstSteoAsync,
+            // firstSteoAsync,
             IntroStepAsync,
             GetNameAsync,
 
