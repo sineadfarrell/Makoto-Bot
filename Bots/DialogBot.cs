@@ -88,7 +88,7 @@ namespace Microsoft.BotBuilderSamples.Bots
             // see if there are previous messages saved in storage.
             try
             {
-                string[] utteranceList = {utteranceLogName};
+                string[] utteranceList = {"UtteranceLog"};
                 logItems = _myStorage.ReadAsync<UtteranceLog>(utteranceList).Result?.FirstOrDefault().Value;
             }
             catch
@@ -111,7 +111,7 @@ namespace Microsoft.BotBuilderSamples.Bots
          // Create Dictionary object to hold received user messages.
          var changes = new Dictionary<string, object>();
          {
-            changes.Add(utteranceLogName, logItems);
+            changes.Add("UtteranceLog", logItems);
          }
          try
          {
@@ -138,7 +138,7 @@ namespace Microsoft.BotBuilderSamples.Bots
         // Create Dictionary object to hold new list of messages.
         var changes = new Dictionary<string, object>();
          {
-            changes.Add(utteranceLogName, logItems);
+            changes.Add("UtteranceLog", logItems);
          };
          
          try
