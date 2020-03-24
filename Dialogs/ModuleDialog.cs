@@ -144,7 +144,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
 
-                    messageText = $"Ah very good! I've heard it's a very interesting module, is a final exam for {moduleDetails.ModuleName.FirstOrDefault()}?";
+                    messageText = $"Ah very good! I've heard it's a very interesting module, is there a final exam for {moduleDetails.ModuleName.FirstOrDefault()}?";
                     elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
 
@@ -266,7 +266,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 case Luis.Conversation.Intent.discussLecturer:
                     return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken);
 
-                case Luis.Conversation.Intent.discussModule:
+                    case Luis.Conversation.Intent.None:
+                    var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                    var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
+
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 3;
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+
+                     default:
                     var messageText2 = $"That's great! Why don't we talk about your lecturers for a bit.";
                     var elsePromptMessage =  MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) ;
 
@@ -274,12 +281,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(LecturerDialog)); 
                 // Catch all for unhandled intents
 
-                default:
-                    var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
-                    var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
-
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = 3;
-                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+        
+                  
 
 
 
