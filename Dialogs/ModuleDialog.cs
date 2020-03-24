@@ -106,13 +106,18 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
-                default:
+                case Luis.Conversation.Intent.None:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
 
                     stepContext.ActiveDialog.State[key: "stepIndex"] = 0;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
+
+                default:
+                  messageText = $"Great! Which one would you say is your favourite?";
+                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
             }
         }
@@ -152,13 +157,23 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 // Catch all for unhandled intents
                 // Catch all for unhandled intents
-                default:
+                case Luis.Conversation.Intent.None:
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
 
                     stepContext.ActiveDialog.State[key: "stepIndex"] = 1;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
+                default:
+                 messageText = " ";
+                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+
+
+                    messageText = $"Ah very good! I've heard it's a very interesting module, is there a final exam for this module?";
+                    elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+
+
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
 
             }
@@ -192,7 +207,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
-                default:
+                case Luis.Conversation.Intent.None:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
@@ -200,6 +215,10 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     stepContext.ActiveDialog.State[key: "stepIndex"] = 2;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
+                default:
+                    var messageText2 = $"Ok! Why do you like the module?";
+                    var elsePromptMessage3 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage3, cancellationToken);
 
             }
         }
