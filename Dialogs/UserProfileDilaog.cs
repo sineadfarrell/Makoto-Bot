@@ -96,6 +96,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
                 return await stepContext.BeginDialogAsync(nameof(ModuleDialog));
             }
+
            
 
            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {userInfo.Name.FirstOrDefault()}, it's great to meet you!"), cancellationToken);

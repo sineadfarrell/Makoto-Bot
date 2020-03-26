@@ -175,12 +175,18 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var messageText = " ";
                     var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
-
+                if(moduleDetails.ModuleName != null){
                     messageText = $"Ah very good! I've heard it's a very interesting module, is there a final exam for {moduleDetails.ModuleName.FirstOrDefault()}?";
                     elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
 
 
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
+                }
+                 var didntUnderstandMessageText3 = $"Sorry, I didn't understand that. Could you please rephrase";
+                    var elsePromptMessage3 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.ExpectingInput) };
+
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 1;
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage3, cancellationToken);
 
                 // Catch all for unhandled intents
                 // Catch all for unhandled intents
