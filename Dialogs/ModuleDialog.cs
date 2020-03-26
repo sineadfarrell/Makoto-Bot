@@ -315,8 +315,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 case Luis.Conversation.Intent.endConversation:
                     return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), cancellationToken); ;
 
-                case Luis.Conversation.Intent.discussLecturer:
-                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog), cancellationToken);
+               
 
                     case Luis.Conversation.Intent.None:
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
