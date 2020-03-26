@@ -97,29 +97,56 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 NumberOfModules = luisResult.Entities.NumberOfModules,
             };
 
+            int i = 0;
+            string[] numbers = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
 
             switch (luisResult.TopIntent().intent)
             {
                 case Luis.Conversation.Intent.discussModule:
 
+                    if(moduleDetails.NumberOfModules != null) { 
+
+                    if (int.TryParse(moduleDetails.NumberOfModules.FirstOrDefault(), out i))
+                    {
                     var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules! Which one would you say is your favourite?";
-                    var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
+                    var elsePromptMessage3 = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage3, cancellationToken);
+                    }
+
+                    foreach (string x in numbers)
+                    {
+                        if ((moduleDetails.NumberOfModules.FirstOrDefault().ToLower()).Contains(x))
+                        {
+                    var messageText = $"Wow {moduleDetails.NumberOfModules.FirstOrDefault()} modules! Which one would you say is your favourite?";
+                    var elsePromptMessageQ= new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessageQ, cancellationToken);
+                        }
+                    }
+
+                }
+                var didntUnderstandMessageTextK = $"Sorry, I didn't understand that. Could you please rephrase";
+                    var elsePromptMessageK = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageTextK, didntUnderstandMessageTextK, InputHints.ExpectingInput) };
+
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 0;
+                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessageK, cancellationToken);
 
                 case Luis.Conversation.Intent.None:
+                 var didntUnderstandMessageText = $"Sorry, I didn't understand that. Could you please rephrase";
+                var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.ExpectingInput) };
+
+                stepContext.ActiveDialog.State[key: "stepIndex"] = 0;
+                return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
+
+                default:
                     // Catch all for unhandled intents
-                    var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
-                    var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
+                    var didntUnderstandMessageText3 = $"Sorry, I didn't understand that. Could you please rephrase";
+                    var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.ExpectingInput) };
 
                     stepContext.ActiveDialog.State[key: "stepIndex"] = 0;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
-                default:
-                  messageText = $"Great! Which one would you say is your favourite?";
-                 elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput) };
-                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
-
             }
+
         }
 
         private async Task<DialogTurnResult> FavModuleAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
