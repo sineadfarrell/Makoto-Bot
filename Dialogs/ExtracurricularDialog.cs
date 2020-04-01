@@ -105,7 +105,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
             }
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                  var elsePromptMessageNone=  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
@@ -133,17 +133,17 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
             var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
 
-            if (stringNeg.Any(luisResult.Text.Contains))
+            if (stringNeg.Any(luisResult.Text.ToLower().Contains))
             {
                 await stepContext.Context.SendActivityAsync(
                     MessageFactory.Text("It was great talking to you! Enjoy the rest of your day!", inputHint: InputHints.IgnoringInput), cancellationToken);
 
                 return await stepContext.EndDialogAsync(null, cancellationToken);
             }
-            if(stringPos.Any(luisResult.Text.Contains)){
+            if(stringPos.Any(luisResult.Text.ToLower().Contains)){
             return await stepContext.NextAsync();
             }
-            var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+            var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                  var elsePromptMessageNone=  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
