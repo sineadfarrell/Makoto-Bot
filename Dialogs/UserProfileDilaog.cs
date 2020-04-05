@@ -29,7 +29,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-            firstSteoAsync,
+            
             IntroStepAsync,
             GetNameAsync,
 
@@ -39,11 +39,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
-        private async Task<DialogTurnResult> firstSteoAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken){
-            await stepContext.Context.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
-             
-            return await stepContext.NextAsync();
-        }
+       
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
