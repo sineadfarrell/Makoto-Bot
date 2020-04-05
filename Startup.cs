@@ -45,8 +45,6 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<ModuleDialog>();
 
             services.AddSingleton<UserProfileDialog>();
-            
-            services.AddSingleton<TopLevelDialog>();
 
             services.AddSingleton<LecturerDialog>();
 

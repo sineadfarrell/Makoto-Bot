@@ -62,12 +62,6 @@ namespace Microsoft.BotBuilderSamples.Bots
 
         public string utteranceLogName;
        
-      //   protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-      //   {
-      //       await turnContext.SendActivityAsync("Hi I'm Makoto, today I want to talk to you about your University experience.");
-      //       await turnContext.SendActivityAsync("If you would like to end our conversation at any point, please let me know by saying something like 'bye' or 'end conversation'");
-      //        await turnContext.SendActivityAsync( "When you are ready to begin our conversation type anything");
-      //   }
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
@@ -79,6 +73,15 @@ namespace Microsoft.BotBuilderSamples.Bots
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+
+           
+             if (ConversationData.PromptedUserForName)
+                {
+                     await turnContext.SendActivityAsync($"Bye");
+                     ConversationData.PromptedUserForName = true;
+                }
+                else{
+                   
             
             // preserve user input.
             var utterance = turnContext.Activity.Text;
@@ -175,6 +178,7 @@ namespace Microsoft.BotBuilderSamples.Bots
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
 
+        }
         }
     }
 }

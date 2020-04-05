@@ -69,6 +69,9 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 Lecturer = luisResult.Entities.Lecturer,
                 Opinion = luisResult.Entities.Opinion,
             };
+            if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
+            return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
+           }
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
                 var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
@@ -77,9 +80,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
             }
-             if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation)){
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
-           }
+            
             
             var messageText = $"That's interesting to know!";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);

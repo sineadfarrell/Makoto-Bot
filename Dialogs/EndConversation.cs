@@ -67,13 +67,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
             
-            if(stringNeg.Any(luisResult.Text.ToLower().Contains)){
+            if(stringPos.Any(luisResult.Text.ToLower().Contains)){
+                ConversationData.PromptedUserForName = true;
                await stepContext.Context.SendActivityAsync(
                     MessageFactory.Text("It was great talking to you! Enjoy the rest of your day!", inputHint: InputHints.IgnoringInput), cancellationToken);
 
                 return await stepContext.EndDialogAsync(null, cancellationToken);
             }
-            if(stringPos.Any(luisResult.Text.ToLower().Contains)){
+            if(stringNeg.Any(luisResult.Text.ToLower().Contains)){
             var messageText = $"Great! Let's continue our conversation.";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
            return await stepContext.BeginDialogAsync(nameof(MainDialog));
