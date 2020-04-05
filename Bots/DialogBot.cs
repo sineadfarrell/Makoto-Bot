@@ -61,6 +61,13 @@ namespace Microsoft.BotBuilderSamples.Bots
         }
 
         public string utteranceLogName;
+
+
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+           ConversationData.PromptedUserForName = false;
+            await turnContext.UpdateActivityAsync(null, cancellationToken);   
+        }
        
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -78,7 +85,7 @@ namespace Microsoft.BotBuilderSamples.Bots
              if (ConversationData.PromptedUserForName)
                 {
                      await turnContext.SendActivityAsync($"Bye");
-                     ConversationData.PromptedUserForName = false;
+                     ConversationData.PromptedUserForName = true;
                 }
                 else{
                    
