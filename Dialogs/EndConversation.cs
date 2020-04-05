@@ -72,7 +72,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                await stepContext.Context.SendActivityAsync(
                     MessageFactory.Text("It was great talking to you! Enjoy the rest of your day!", inputHint: InputHints.IgnoringInput), cancellationToken);
 
-                return await stepContext.EndDialogAsync(null, cancellationToken);
+                 
+                 return await stepContext.CancelAllDialogsAsync();
             }
             if(stringNeg.Any(luisResult.Text.ToLower().Contains)){
             var messageText = $"Great! Let's continue our conversation.";
