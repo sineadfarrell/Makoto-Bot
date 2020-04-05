@@ -332,11 +332,6 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(LecturerDialog)); 
                 // Catch all for unhandled intents
 
-        
-                  
-
-
-
             }
         }
 
