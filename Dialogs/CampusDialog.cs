@@ -151,7 +151,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.EndDialogAsync(null, cancellationToken);
             }
             if(stringNeg.Any(luisResult2.Text.ToLower().Contains)){
-            var messageTextNeg = $"Great! Let's continue our conversation.";
+            var messageTextNeg = $"How has the corona virus affected your use of the campus?";
             var elsePromptMessageNeg = new PromptOptions { Prompt = MessageFactory.Text(messageTextNeg, messageTextNeg, InputHints.ExpectingInput) };
             await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessageNeg, cancellationToken);
             }
