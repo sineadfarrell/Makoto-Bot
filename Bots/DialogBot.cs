@@ -63,11 +63,11 @@ namespace Microsoft.BotBuilderSamples.Bots
         public string utteranceLogName;
 
 
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-           ConversationData.PromptedUserForName = false;
-            await turnContext.SendActivityAsync("");
-        }
+      //   protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+      //   {
+      //      ConversationData.PromptedUserForName = false;
+      //       await turnContext.SendActivityAsync("");
+      //   }
        
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
         {
