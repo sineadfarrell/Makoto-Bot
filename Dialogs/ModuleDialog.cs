@@ -66,8 +66,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 0;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
 
@@ -128,16 +127,14 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageTextK = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessageK = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageTextK, didntUnderstandMessageTextK, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 1;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessageK, cancellationToken);
 
                 case Luis.Conversation.Intent.None:
                  var didntUnderstandMessageText = $"Sorry, I didn't understand that. Could you please rephrase";
                 var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.ExpectingInput) };
 
-                stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                turnValue += 1;
+                stepContext.ActiveDialog.State[key: "stepIndex"] = 1;
                 return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
                 default:
@@ -145,8 +142,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText3 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 1;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
             }
@@ -189,8 +185,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                  var didntUnderstandMessageText3 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage3 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 2;
+                    //turnValue += 1;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage3, cancellationToken);
 
                 // Catch all for unhandled intents
@@ -199,8 +195,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 2;
+                    //turnValue += 1;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
                 default:
@@ -251,8 +247,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 3;
+
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
                 default:
@@ -262,44 +258,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
             }
         }
-        private async Task<DialogTurnResult> ExamorCaLeastAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-
-            var moduleDetails = new ModuleDetails()
-            {
-                ModuleName = luisResult.Entities.Module,
-            };
-
-
-            switch (luisResult.TopIntent().intent)
-            {
-                case Luis.Conversation.Intent.endConversation:
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog)); 
-
-
-                case Luis.Conversation.Intent.None:
-
-                    var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message.";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = -1;
-                    return await stepContext.NextAsync();
-
-                default:
-
-                    var messageText2 = $"Ok! Why don't you like it?";
-                    var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(messageText2, messageText2, InputHints.ExpectingInput) };
-                    return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
-            }
-        }
+        
         private async Task<DialogTurnResult> OpinionFavAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
 
@@ -328,8 +287,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                     var elsePromptMessage2 = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = turnValue;
-                    turnValue += 1;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = 4;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
                      default:
@@ -341,107 +299,8 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 // Catch all for unhandled intents
 
             }
-        }
+        
 
-
-
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            var moduleDetails = new ModuleDetails()
-            {
-                ModuleName = luisResult.Entities.Module,
-            };
-            switch (luisResult.TopIntent().intent)
-            {
-                case Luis.Conversation.Intent.discussLecturer:
-                    var didntUnderstandMessageText = $"That's great! Why don't we talk about your lecturers.";
-                    var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-                    return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleDetails, cancellationToken);
-
-                case Luis.Conversation.Intent.discussExtracurricular:
-                    var didntUnderstandMessageText2 = $"That's great! Do you do anything in your spare time?";
-                    var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
-                    return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleDetails, cancellationToken); ;
-
-                case Luis.Conversation.Intent.discussCampus:
-                    var didntUnderstandMessageText3 = $"That's great! Do you do like UCD's campus?";
-                    var didntUnderstandMessage3 = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage3, cancellationToken);
-                    return await stepContext.BeginDialogAsync(nameof(CampusDialog), moduleDetails, cancellationToken); ;
-
-                case Luis.Conversation.Intent.endConversation:
-                    return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), moduleDetails, cancellationToken); ;
-
-                default:
-                    var didntUnderstandMessageText4 = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                    var didntUnderstandMessage4 = MessageFactory.Text(didntUnderstandMessageText4, didntUnderstandMessageText4, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(didntUnderstandMessage4, cancellationToken);
-
-
-
-                    return await stepContext.ReplaceDialogAsync(nameof(ModuleDialog));
-                    ;
-            }
-        }
-
-        private async Task<DialogTurnResult> NextDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if (!_luisRecognizer.IsConfigured)
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the web.config file.", inputHint: InputHints.IgnoringInput), cancellationToken);
-
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-            var luisResult = await _luisRecognizer.RecognizeAsync<Luis.Conversation>(stepContext.Context, cancellationToken);
-            var moduleDetails = new ModuleDetails()
-            {
-                ModuleName = luisResult.Entities.Module,
-            };
-
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussLecturer))
-            {
-                return await stepContext.BeginDialogAsync(nameof(LecturerDialog), moduleDetails, cancellationToken);
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussExtracurricular))
-            {
-                return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleDetails, cancellationToken); ;
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.discussCampus))
-            {
-                return await stepContext.BeginDialogAsync(nameof(CampusDialog), moduleDetails, cancellationToken); ;
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.endConversation))
-            {
-                return await stepContext.BeginDialogAsync(nameof(EndConversationDialog), moduleDetails, cancellationToken); ;
-            }
-            if (luisResult.TopIntent().Equals(Luis.Conversation.Intent.None))
-            {
-                var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try rephrasing your message(intent was {luisResult.TopIntent().intent})";
-                var didntUnderstandMessage = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-                await stepContext.Context.SendActivityAsync(didntUnderstandMessage, cancellationToken);
-            }
-
-            var messageText = $"Would you spend much time on campus after your lectures and tutorials?";
-            var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
-            return await stepContext.BeginDialogAsync(nameof(ExtracurricularDialog), moduleDetails, cancellationToken); ;
-        }
-
-
-        private static bool IsAmbiguous(string timex)
-        {
-            var timexProperty = new TimexProperty(timex);
-            return !timexProperty.Types.Contains(Constants.TimexTypes.Definite);
-        }
+       
     }
 }
