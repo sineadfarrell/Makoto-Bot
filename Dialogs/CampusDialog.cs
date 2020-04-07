@@ -102,7 +102,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
             var messageText = $"Do you use the facilities that are available often?";
@@ -160,7 +160,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                    var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
             var messageText = $"How has the corona virus affected this?";
@@ -219,7 +219,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  2; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
             }
             var messageText = $"That's very interesting! Would you like to talk more about the effect of the Corona Virus on your university experience?";
@@ -258,7 +258,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
               var didntUnderstandMessageText = $"Sorry, I didn't understand that. Could you please rephrase";
                     var elsePromptMessage = new PromptOptions { Prompt = MessageFactory.Text(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.ExpectingInput) };
 
-                    stepContext.ActiveDialog.State[key: "stepIndex"] = 3;
+                    stepContext.ActiveDialog.State[key: "stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                     return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage, cancellationToken);
 
         }

@@ -76,7 +76,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
             }
@@ -117,7 +117,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                    var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  1; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage2, cancellationToken);
 
             }
@@ -132,7 +132,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                var didntUnderstandMessageText3 = $"Sorry, I didn't understand that. Could you please rephrase)";
                 var elsePromptMessage3 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText3, didntUnderstandMessageText3, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  2; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessage3, cancellationToken);
 
 

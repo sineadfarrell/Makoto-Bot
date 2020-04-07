@@ -127,7 +127,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 var didntUnderstandMessageTextNone = $"Sorry, I didn't understand that. Could you please rephrase";
                  var elsePromptMessageNone =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageTextNone, didntUnderstandMessageTextNone, InputHints.ExpectingInput)};
                  
-                 stepContext.ActiveDialog.State[key: "stepIndex"] =  0; 
+                 stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
                  return await stepContext.PromptAsync(nameof(TextPrompt), elsePromptMessageNone, cancellationToken);
 
             }
