@@ -15,6 +15,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
          private readonly ConversationRecognizer _luisRecognizer;
         protected readonly ILogger Logger;
         
+        public static int turn = -1;
         
         public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger, MainDialog mainDialog)
             : base(nameof(EndConversationDialog))
@@ -34,7 +35,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         }
 
          private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
+        {      
             if (!_luisRecognizer.IsConfigured)
             {
                 await stepContext.Context.SendActivityAsync(
