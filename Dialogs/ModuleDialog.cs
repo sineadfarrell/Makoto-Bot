@@ -18,7 +18,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         protected readonly ILogger Logger;
 
 
-        protected int turnValue = -1;
+        protected int turnValue = 0;
 
         public ModuleDialog(ConversationRecognizer luisRecognizer, ILogger<ModuleDialog> logger, LecturerDialog lecturerDialog, ExtracurricularDialog extracurricularDialog, EndConversationDialog endConversationDialog, CampusDialog campusDialog)
             : base(nameof(ModuleDialog))
