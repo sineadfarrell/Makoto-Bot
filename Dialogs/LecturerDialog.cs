@@ -10,6 +10,7 @@ using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
+    // Lecture Dialog Class
     public class LecturerDialog : ComponentDialog
     {
          private readonly ConversationRecognizer _luisRecognizer;
@@ -35,7 +36,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
-
+        //  Begin dialog flow for Lectuer dialog 
          private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -125,6 +126,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             return await stepContext.BeginDialogAsync(nameof(EndConversationDialog));;    
              }
             if(stringPos.Any(luisResult.Text.ToLower().Contains)){
+                 // Transition to Main Dialog - to choose what to discuss 
                 return await stepContext.BeginDialogAsync(nameof(MainDialog));
             }
             

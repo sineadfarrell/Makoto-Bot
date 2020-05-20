@@ -10,6 +10,7 @@ using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
+    // EndConversation Dialog Class
     public class EndConversationDialog : ComponentDialog
     {
          private readonly ConversationRecognizer _luisRecognizer;
@@ -17,6 +18,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
         
         public static int turn = -1;
         
+        // Begin End Conversation Dialog-Flow
         public EndConversationDialog(ConversationRecognizer luisRecognizer,  ILogger<EndConversationDialog> logger, MainDialog mainDialog)
             : base(nameof(EndConversationDialog))
 
@@ -79,6 +81,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             if(stringNeg.Any(luisResult.Text.ToLower().Contains)){
             var messageText = $"Great! Let's continue our conversation.";
             var elsePromptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+            // Transition to Main Dialog - choose what to discuss
            return await stepContext.BeginDialogAsync(nameof(MainDialog));
             }
             var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";

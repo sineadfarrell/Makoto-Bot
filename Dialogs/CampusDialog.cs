@@ -9,6 +9,7 @@ using System.Linq;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
+    // Campus Dialog Class
     public class CampusDialog : ComponentDialog
     {
          private readonly ConversationRecognizer _luisRecognizer;
@@ -35,6 +36,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
+        // begin Campus dialog flow 
          private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -157,7 +159,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             }
     }
              if(luisResult.TopIntent().Equals(Luis.Conversation.Intent.None)){
-                   var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
+                var didntUnderstandMessageText2 = $"Sorry, I didn't understand that. Could you please rephrase)";
                  var elsePromptMessage2 =  new PromptOptions {Prompt = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.ExpectingInput)};
                  
                  stepContext.ActiveDialog.State[key: "stepIndex"] =  (int)stepContext.ActiveDialog.State["stepIndex"] - 1;
@@ -253,6 +255,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                 return await stepContext.EndDialogAsync(null, cancellationToken);
             }
             if(stringPos.Any(luisResult.Text.ToLower().Contains)){
+            // Transition to corona virus discusion 
             return await stepContext.BeginDialogAsync(nameof(CoronaDialog));
             }
               var didntUnderstandMessageText = $"Sorry, I didn't understand that. Could you please rephrase";

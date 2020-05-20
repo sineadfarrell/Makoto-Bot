@@ -6,13 +6,11 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using System;
-using System.Collections.Generic;
-using Microsoft.Bot.Builder.Dialogs.Choices;
 
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
+    // Dialog Class for Extracurricular Dialog 
     public class ExtracurricularDialog : ComponentDialog
     {
         private readonly ConversationRecognizer _luisRecognizer;
@@ -40,6 +38,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
+    // Begin dialog flow 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!_luisRecognizer.IsConfigured)
@@ -184,7 +183,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
 
     private async Task<DialogTurnResult> CampusAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            
+             // Transition to Campus Dialog
             return await stepContext.BeginDialogAsync(nameof(CampusDialog));
 
         }

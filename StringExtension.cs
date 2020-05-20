@@ -1,5 +1,8 @@
 using System.Linq;
 using System;
+
+//  Save User's name with the first character uppercase
+// As LUIS converts to lower case
 public static class StringExtension
 {
     public static string FirstCharToUpper(this string input)

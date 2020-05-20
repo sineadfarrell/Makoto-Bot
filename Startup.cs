@@ -50,10 +50,6 @@ namespace Microsoft.BotBuilderSamples
 
             services.AddSingleton<CoronaDialog>();
 
-            
-            
-
-
             // // The MainDialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
 

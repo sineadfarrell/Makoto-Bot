@@ -10,10 +10,11 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
-using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
+
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
+    // Class used to get users preference in conversation topic
     public class MainDialog : ComponentDialog
     {
         private readonly ConversationRecognizer _luisRecognizer;
@@ -102,6 +103,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                         Lecturer = luisResult.Entities.Lecturer,
                         Emotion = luisResult.Entities.Emotion
                     };
+                     // Transition to Campus Dialog
                     return await stepContext.BeginDialogAsync(nameof(CampusDialog));
                 
                 case Luis.Conversation.Intent.discussExtracurricular:
@@ -119,7 +121,7 @@ namespace Microsoft.BotBuilderSamples.Dialogs
                     var didntUnderstandMessageText2 = $"Sorry, I didn't understand. Let's try again!";
                     var didntUnderstandMessage2 = MessageFactory.Text(didntUnderstandMessageText2, didntUnderstandMessageText2, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(didntUnderstandMessage2, cancellationToken);
-                   
+                    // Reprompt 
                     return await stepContext.ReplaceDialogAsync(nameof(MainDialog));
 
                 default:
