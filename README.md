@@ -1,7 +1,8 @@
 # Makoto-Bot
 
 This chatbot has been created using [Bot Framework](https://dev.botframework.com).
-Its response are endowed with two personalities, agreeablness and extroversion. 
+
+Its response are endowed with two personalities, high agreeableness and high extroversion. 
 
 ## The Chatbot can be run and tested using the webchat:
 
